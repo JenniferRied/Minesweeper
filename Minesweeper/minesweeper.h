@@ -2,6 +2,8 @@
 #define MINESWEEPER_H
 
 #include <QMainWindow>
+#include "spielbrett.h"
+#include <QGridLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Minesweeper; }
@@ -14,11 +16,22 @@ class Minesweeper : public QMainWindow
 public:
     Minesweeper(QWidget *parent = nullptr);
     ~Minesweeper();
+    QGridLayout spielbrett_gridLayout;
 
 public slots:
     void hilfe_oeffnen();
 
+signals:
+    void starte_spiel();
+
 private:
     Ui::Minesweeper *ui;
+    QFrame* mainFrame;
+    Spielbrett* spielbrett;
+
+    void initialisieren();
+
+    unsigned int reihen;
+    unsigned int spalten;
 };
 #endif // MINESWEEPER_H
