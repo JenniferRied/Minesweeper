@@ -1,4 +1,5 @@
 #include "kachel.h"
+#include <QMouseEvent>
 
 QString Kachel::nicht_aufgedecktes_Style_Sheet =
         "Kachel"
@@ -30,6 +31,32 @@ Kachel::Kachel(Kachel_Position position, QWidget* parent)
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setCheckable(true);
+}
+
+void Kachel::mousePressEvent(QMouseEvent *e)
+{
+
+    if(e->buttons() == (Qt::LeftButton | Qt::RightButton))
+    {
+        emit beide_gleichzeitig_klick();
+        k_klicks = Qt::LeftButton | Qt::RightButton;
+    }
+    else if (e->buttons() == Qt::LeftButton)
+        k_klicks = Qt::LeftButton;
+    else if (e->buttons() == Qt::RightButton)
+        k_klicks = Qt::RightButton;
+    else if (e->buttons() == Qt::MidButton)
+        k_klicks = Qt::MidButton;
+}
+
+void Kachel::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (k_klicks == Qt::LeftButton)
+        emit linksklick();
+    else if (k_klicks == Qt::RightButton)
+        emit rechtsklick();
+    else if (k_klicks == Qt::MidButton)
+        emit mittelklick();
 }
 
 Kachel_Position Kachel::position() const

@@ -26,6 +26,9 @@ public:
     bool ist_aufgedeckt();
     bool hat_benachbarte_minen();
 
+    virtual void mousePressEvent(QMouseEvent* e) override;
+    virtual void mouseReleaseEvent(QMouseEvent* e) override;
+
     QSize sizeHint() const override;
 
 signals:
@@ -42,6 +45,7 @@ private:
     static QString nicht_aufgedecktes_Style_Sheet;
     static QString aufgedeckt_Style_Sheet;
     static QString aufgedeckte_Zahlen_Style_Sheet;
+    Qt::MouseButtons k_klicks;
 
     Kachel_Position k_position;
 
