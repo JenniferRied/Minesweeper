@@ -71,7 +71,7 @@ void Kachel::nachbar_hinzufuegen(Kachel *kachel)
 
 QSize Kachel::sizeHint() const
 {
-    return QSize(20,20);
+    return QSize(24,24);
 }
 
 void Kachel::status_maschine_erstellen()

@@ -23,7 +23,6 @@ void Spielbrett::layout_erstellen()
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSizeConstraint(QLayout::SetFixedSize);
 
     this->setLayout(layout);
 }

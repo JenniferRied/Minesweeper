@@ -10,12 +10,14 @@ Minesweeper::Minesweeper(QWidget *parent)
     , mainFrame(nullptr)
 {
     ui->setupUi(this);
-    reihen = 15;
-    spalten = 15;
+    reihen = 20;
+    spalten = 20;
 
     initialisieren();
+    Minesweeper::adjustSize();
 
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
+    connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(initialisieren()));
 }
 
 void Minesweeper::hilfe_oeffnen()

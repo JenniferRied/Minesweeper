@@ -20,6 +20,7 @@ public:
 
 public slots:
     void hilfe_oeffnen();
+    void initialisieren();
 
 signals:
     void starte_spiel();
@@ -29,7 +30,7 @@ private:
     QFrame* mainFrame;
     Spielbrett* spielbrett;
 
-    void initialisieren();
+
 
     unsigned int reihen;
     unsigned int spalten;

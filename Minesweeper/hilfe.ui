@@ -10,8 +10,14 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777202</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Hilfe</string>
   </property>
   <widget class="QLabel" name="linksklick_label">
    <property name="geometry">
