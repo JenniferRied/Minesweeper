@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "spielbrett.h"
 #include <QGridLayout>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Minesweeper; }
@@ -21,6 +22,10 @@ public:
 public slots:
     void hilfe_oeffnen();
     void initialisieren();
+    void pausieren();
+    void beenden();
+    void statistik_oeffnen();
+    void timer_timeout();
 
 signals:
     void starte_spiel();
@@ -30,9 +35,15 @@ private:
     QFrame* mainFrame;
     Spielbrett* spielbrett;
 
-
-
     unsigned int reihen;
     unsigned int spalten;
+
+    int zeit = 0;
+    QTimer* timer = NULL;
+    bool pausiert = false;
+
+    void timer_starten();
+    void timer_pausieren();
+    void timer_fortsetzen();
 };
 #endif // MINESWEEPER_H

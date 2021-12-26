@@ -3,6 +3,9 @@
 #include "hilfe.h"
 #include "spielbrett.h"
 #include <QVBoxLayout>
+#include "statistikdialog.h"
+#include "statistikspeicher.h"
+#include <iostream>
 
 Minesweeper::Minesweeper(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +21,9 @@ Minesweeper::Minesweeper(QWidget *parent)
 
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
     connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(initialisieren()));
+    connect(ui->pause_button, SIGNAL(clicked()), this, SLOT(pausieren()));
+    connect(ui->beenden_button, SIGNAL(clicked()), this, SLOT(beenden()));
+    connect(ui->actionStatistik, SIGNAL(triggered()), this, SLOT(statistik_oeffnen()));
 }
 
 void Minesweeper::hilfe_oeffnen()
@@ -28,8 +34,6 @@ void Minesweeper::hilfe_oeffnen()
 
 void Minesweeper::initialisieren()
 {
-
-
     spielbrett = new Spielbrett(reihen,spalten, ui->haupt_frame, ui->spielbrett_gridLayout);
     auto haupt_Frame_Layout = new QVBoxLayout;
 
@@ -37,11 +41,77 @@ void Minesweeper::initialisieren()
 
     haupt_Frame_Layout->addWidget(spielbrett);
 
-
     haupt_Frame_Layout->setSizeConstraint(QLayout::SetNoConstraint);
+    timer_starten();
+}
 
+void Minesweeper::pausieren()
+{
+    if (pausiert)
+    {
+        timer_fortsetzen();
+        ui->spielbrett_widget->show();
+        ui->pause_button->setText("Pause");
+    }else{
+        ui->spielbrett_widget->hide();
+        timer_pausieren();
+        ui->pause_button->setText("Weiter");
+    }
+}
 
+void Minesweeper::beenden()
+{
+    ui->Zeitanzeige->display(0);
+    //alle felder aufdecken
+    //spiel zählt als verloren: Statistikspeicher::instance().verloren(5,5,3);
+    pausiert = false;
+}
 
+void Minesweeper::statistik_oeffnen()
+{
+    timer_pausieren();
+    ui->spielbrett_widget->hide();
+    Statistikdialog statistik;
+    statistik.exec();
+    ui->spielbrett_widget->show();
+    timer_fortsetzen();
+}
+
+void Minesweeper::timer_starten()
+{
+    if(timer != NULL)
+    {
+        delete timer;
+        timer = NULL;
+    }
+    zeit = 0;
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
+    timer->start(1000);
+}
+
+void Minesweeper::timer_pausieren()
+{
+    if(timer && !pausiert)
+    {
+        timer->stop();
+        pausiert = true;
+    }
+}
+
+void Minesweeper::timer_fortsetzen()
+{
+    if(timer && pausiert)
+    {
+        timer->start();
+        pausiert = false;
+    }
+}
+
+void Minesweeper::timer_timeout()
+{
+    zeit++;
+    ui->Zeitanzeige->display(zeit);
 }
 
 Minesweeper::~Minesweeper()

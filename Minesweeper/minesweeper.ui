@@ -45,6 +45,9 @@
        </widget>
       </item>
       <item>
+       <widget class="QLCDNumber" name="Zeitanzeige"/>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -71,7 +74,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="beenden_button">
         <property name="text">
          <string>Beenden</string>
         </property>
@@ -95,14 +98,20 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <layout class="QGridLayout" name="spielbrett_gridLayout">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetFixedSize</enum>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-        </layout>
+        <widget class="QWidget" name="spielbrett_widget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <layout class="QGridLayout" name="spielbrett_gridLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>

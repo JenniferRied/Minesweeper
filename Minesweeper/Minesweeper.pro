@@ -23,17 +23,27 @@ SOURCES += \
     kachel.cpp \
     main.cpp \
     minesweeper.cpp \
-    spielbrett.cpp
+    spielbrett.cpp \
+    statistikdialog.cpp \
+    statistikeintrag.cpp \
+    statistikspeicher.cpp \
+    statistikzeile.cpp
 
 HEADERS += \
     hilfe.h \
     kachel.h \
     minesweeper.h \
-    spielbrett.h
+    spielbrett.h \
+    statistikdialog.h \
+    statistikeintrag.h \
+    statistikspeicher.h \
+    statistikzeile.h
 
 FORMS += \
     hilfe.ui \
-    minesweeper.ui
+    minesweeper.ui \
+    statistikdialog.ui \
+    statistikzeile.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
