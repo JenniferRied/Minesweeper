@@ -20,10 +20,19 @@ Minesweeper::Minesweeper(QWidget *parent)
     Minesweeper::adjustSize();
 
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
-    connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(initialisieren()));
+    connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(neu()));
     connect(ui->pause_button, SIGNAL(clicked()), this, SLOT(pausieren()));
     connect(ui->beenden_button, SIGNAL(clicked()), this, SLOT(beenden()));
     connect(ui->actionStatistik, SIGNAL(triggered()), this, SLOT(statistik_oeffnen()));
+}
+
+void Minesweeper::neu()
+{
+    timer_pausieren();
+    pausiert = false;
+    erster_klick = true;
+    ui->Zeitanzeige->display(0);
+    initialisieren();
 }
 
 void Minesweeper::hilfe_oeffnen()
@@ -38,11 +47,20 @@ void Minesweeper::initialisieren()
     auto haupt_Frame_Layout = new QVBoxLayout;
 
     connect(spielbrett, &Spielbrett::initialisiert, this, &Minesweeper::starte_spiel, Qt::UniqueConnection);
+    connect(spielbrett, SIGNAL(klickt()), this, SLOT(kachel_geklickt()));
 
     haupt_Frame_Layout->addWidget(spielbrett);
 
     haupt_Frame_Layout->setSizeConstraint(QLayout::SetNoConstraint);
-    timer_starten();
+}
+
+void Minesweeper::kachel_geklickt()
+{
+    if(erster_klick)
+    {
+        timer_starten();
+        erster_klick = false;
+    }
 }
 
 void Minesweeper::pausieren()
@@ -64,7 +82,6 @@ void Minesweeper::beenden()
     ui->Zeitanzeige->display(0);
     //alle felder aufdecken
     //spiel zählt als verloren: Statistikspeicher::instance().verloren(5,5,3);
-    pausiert = false;
 }
 
 void Minesweeper::statistik_oeffnen()

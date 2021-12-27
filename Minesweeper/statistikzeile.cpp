@@ -52,6 +52,21 @@ Statistikzeile::Statistikzeile(Statistikeintrag *inhalt, QWidget *parent) :
     }
 }
 
+QWidget *Statistikzeile::links()
+{
+    return ui->links;
+}
+
+QWidget *Statistikzeile::mitte()
+{
+    return ui->mitte;
+}
+
+QWidget *Statistikzeile::rechts()
+{
+    return ui->rechts;
+}
+
 Statistikzeile::~Statistikzeile()
 {
     delete ui;

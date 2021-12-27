@@ -37,9 +37,18 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
         {
             k_kacheln[r] += new Kachel({r, s}, this);
             spielbrett_gridLayout->addWidget(k_kacheln[r][s], r, s);
+            connect(k_kacheln[r][s],SIGNAL(linksklick()),this,SLOT(geklickt()));
+            connect(k_kacheln[r][s],SIGNAL(rechtsklick()),this,SLOT(geklickt()));
+            connect(k_kacheln[r][s],SIGNAL(beide_gleichzeitig_klick()),this,SLOT(geklickt()));
+            connect(k_kacheln[r][s],SIGNAL(mittelklick()),this,SLOT(geklickt()));
         }
     }
     k_kacheln[0][0]->setDown(true);
+}
+
+void Spielbrett::geklickt()
+{
+    emit klickt();
 }
 
 void Spielbrett::nachbarn_hinzufuegen()

@@ -20,12 +20,14 @@ public:
     QGridLayout spielbrett_gridLayout;
 
 public slots:
+    void neu();
     void hilfe_oeffnen();
     void initialisieren();
     void pausieren();
     void beenden();
     void statistik_oeffnen();
     void timer_timeout();
+    void kachel_geklickt();
 
 signals:
     void starte_spiel();
@@ -41,6 +43,8 @@ private:
     int zeit = 0;
     QTimer* timer = NULL;
     bool pausiert = false;
+
+    bool erster_klick = true;
 
     void timer_starten();
     void timer_pausieren();

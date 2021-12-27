@@ -14,8 +14,12 @@ public:
     unsigned int reihen() const{return k_reihen; };
     unsigned int spalten() const{return k_spalten; };
 
+public slots:
+    void geklickt();
+
 signals:
     void initialisiert();
+    void klickt();
 
 private:
     unsigned int k_reihen;

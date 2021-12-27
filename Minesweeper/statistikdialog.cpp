@@ -12,9 +12,16 @@ Statistikdialog::Statistikdialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    foreach (Statistikeintrag *eintrag, Statistikspeicher::instance().eintraege())
+    QGridLayout* behaeltnis_layout = static_cast<QGridLayout*>(ui->behaelter->layout());
+
+    QList<Statistikeintrag *> eintraege = Statistikspeicher::instance().eintraege();
+    for(int i = 0; i< eintraege.size(); i++)
     {
-        ui->behaelter->addWidget(new Statistikzeile(eintrag, ui->behaelter_widget));
+        Statistikeintrag* eintrag = eintraege.at(i);
+        Statistikzeile* zeile = new Statistikzeile(eintrag, ui->behaelter_widget);
+        behaeltnis_layout->addWidget(zeile->links(), i, 0);
+        behaeltnis_layout->addWidget(zeile->mitte(), i, 1);
+        behaeltnis_layout->addWidget(zeile->rechts(), i, 2);
     }
 
     QTimer::singleShot(100, [=] { adjustSize(); });

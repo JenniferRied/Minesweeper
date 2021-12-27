@@ -16,6 +16,10 @@ public:
     explicit Statistikzeile(Statistikeintrag* inhalt , QWidget *parent = 0);
     ~Statistikzeile();
 
+    QWidget *links();
+    QWidget *mitte();
+    QWidget *rechts();
+
 private:
     Ui::Statistikzeile *ui;
 };
