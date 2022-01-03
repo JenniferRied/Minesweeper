@@ -43,7 +43,7 @@ void Minesweeper::hilfe_oeffnen()
 
 void Minesweeper::initialisieren()
 {
-    spielbrett = new Spielbrett(reihen,spalten, ui->haupt_frame, ui->spielbrett_gridLayout);
+    spielbrett = new Spielbrett(reihen,spalten, minen_anzahl, ui->haupt_frame, ui->spielbrett_gridLayout);
     auto haupt_Frame_Layout = new QVBoxLayout;
 
     connect(spielbrett, &Spielbrett::initialisiert, this, &Minesweeper::starte_spiel, Qt::UniqueConnection);

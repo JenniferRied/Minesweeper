@@ -39,6 +39,7 @@ private:
 
     unsigned int reihen;
     unsigned int spalten;
+    unsigned int minen_anzahl;
 
     int zeit = 0;
     QTimer* timer = NULL;

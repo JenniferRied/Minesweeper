@@ -1,11 +1,14 @@
 #include "spielbrett.h"
 #include <iostream>
 #include <QGridLayout>
+#include <random>
 #include "minesweeper.h"
 
-Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, QWidget* parent, QGridLayout* spielbrett_gridLayout)
+
+Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout)
     : k_reihen(reihen)
     , k_spalten(spalten)
+    , k_minen_anzahl(minen_anzahl)
     , QFrame(parent)
 {
 
@@ -78,6 +81,33 @@ void Spielbrett::nachbarn_hinzufuegen()
             if (s)
                 kachel->nachbar_hinzufuegen(k_kacheln[r][s - 1]);
         }
+    }
+}
+
+void Spielbrett::minen_verteilen()
+{
+
+    QSet <Kachel*> fertig;
+
+    for (unsigned int reihe = 0; reihe < k_reihen; ++reihe)
+    {
+        k_kacheln += QList<Kachel*>{};
+        for (unsigned int spalte = 0; spalte < k_spalten; ++spalte)
+        {
+            if (auto kachel = k_kacheln [reihe] [spalte]; !fertig.contains(kachel))
+                kacheln += kachel;
+        }
+    }
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(kacheln.begin(),kacheln.end(),g);
+
+    for (unsigned int i = 0; i < k_minen_anzahl; ++i)
+    {
+        kacheln[i] -> minen_verteiler(true);
+        k_minen.insert(kacheln[i]);
     }
 }
 
