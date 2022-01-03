@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Minesweeper</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="Bilder.qrc">
+    <normaloff>:/new/icons/Bombe.png</normaloff>:/new/icons/Bombe.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -154,6 +158,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="Bilder.qrc"/>
+ </resources>
  <connections/>
 </ui>

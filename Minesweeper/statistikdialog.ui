@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Statistik</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="Bilder.qrc">
+    <normaloff>:/new/icons/Bombe.png</normaloff>:/new/icons/Bombe.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
@@ -63,6 +67,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Bilder.qrc"/>
+ </resources>
  <connections/>
 </ui>
