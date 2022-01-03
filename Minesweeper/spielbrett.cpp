@@ -6,14 +6,15 @@
 
 
 Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout)
-    : k_reihen(reihen)
+    : QFrame(parent)
+    , k_reihen(reihen)
     , k_spalten(spalten)
     , k_minen_anzahl(minen_anzahl)
-    , QFrame(parent)
 {
 
     kacheln_erstellen(spielbrett_gridLayout);
     layout_erstellen();
+    minen_verteilen();
     nachbarn_hinzufuegen();
 }
 
@@ -44,6 +45,7 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
             connect(k_kacheln[r][s],SIGNAL(rechtsklick()),this,SLOT(geklickt()));
             connect(k_kacheln[r][s],SIGNAL(beide_gleichzeitig_klick()),this,SLOT(geklickt()));
             connect(k_kacheln[r][s],SIGNAL(mittelklick()),this,SLOT(geklickt()));
+            //connect(k_kacheln[r][s], &Kachel::erster_klick, this ,&Spielbrett::minen_verteilen);
         }
     }
     k_kacheln[0][0]->setDown(true);
@@ -87,6 +89,7 @@ void Spielbrett::nachbarn_hinzufuegen()
 void Spielbrett::minen_verteilen()
 {
 
+    QList<Kachel*> kacheln;
     QSet <Kachel*> fertig;
 
     for (unsigned int reihe = 0; reihe < k_reihen; ++reihe)
@@ -99,15 +102,16 @@ void Spielbrett::minen_verteilen()
         }
     }
 
-    std::random_device rd;
-    std::mt19937 g(rd());
+    std::random_device zufall;
+    std::mt19937 g(zufall());
 
     std::shuffle(kacheln.begin(),kacheln.end(),g);
 
     for (unsigned int i = 0; i < k_minen_anzahl; ++i)
     {
-        kacheln[i] -> minen_verteiler(true);
+        kacheln[i] -> mine_plazieren(true);
         k_minen.insert(kacheln[i]);
     }
+    emit initialisiert();
 }
 

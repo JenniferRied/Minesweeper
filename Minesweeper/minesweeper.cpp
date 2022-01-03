@@ -15,6 +15,7 @@ Minesweeper::Minesweeper(QWidget *parent)
     ui->setupUi(this);
     reihen = 20;
     spalten = 20;
+    minen_anzahl = 100;
 
     initialisieren();
     Minesweeper::adjustSize();

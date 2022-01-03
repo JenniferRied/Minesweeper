@@ -20,27 +20,43 @@ public:
     Kachel_Position position() const;
 
     void nachbar_hinzufuegen(Kachel* kachel);
-    void minen_verteiler(bool val);
+    void mine_plazieren(bool wert);
     void minen_aufdecken();
+    void klicken();
 
-    bool ist_mine();
+    bool ist_mine() const;
     bool ist_markiert();
-    bool ist_aufgedeckt();
-    bool hat_benachbarte_minen();
+    bool ist_aufgedeckt() const;
+    bool hat_benachbarte_minen() const;
+
+    unsigned int benachbarte_mienen_zaehler() const;
 
     virtual void mousePressEvent(QMouseEvent* e) override;
     virtual void mouseReleaseEvent(QMouseEvent* e) override;
 
     QSize sizeHint() const override;
 
+    static QIcon flagge_bild();
+    static QIcon aufgedeckt_bild();
+    static QIcon mine_bild();
+
+    QList<Kachel*>& nachbarn();
+
 signals:
 
+    void unClicked();
+    void erster_klick(Kachel*);
     void linksklick();
     void rechtsklick();
     void beide_gleichzeitig_klick();
     void mittelklick();
+    void aufdecken();
     void aufgedeckt();
     void explodiert();
+    void nachbarn_aufdecken();
+    void unPreview();
+    void unPreviewNeighbors();
+    void vorschau();
     void markiert(bool);
 
 private:
@@ -60,8 +76,12 @@ private:
     QState* nicht_aufgedeckter_status;
     QState* aufgedeckter_status;
     QState* markierter_status;
-
+    QState* nachbar_status_aufdecken;
+    QState* nachbar_vorschau_status;
+    QState* vorschau_status;
     bool k_ist_mine;
+    unsigned int k_benachbarte_mienen_zaehler;
+    unsigned int k_benachbarte_flaggen_zaehler;
 
 };
 

@@ -23,11 +23,45 @@ QString Kachel::aufgedeckte_Zahlen_Style_Sheet =
         "   border: 1px solid darkgray;"
         "}";
 
+QIcon Kachel::aufgedeckt_bild()
+{
+    static QIcon icon = QIcon(QPixmap(":/new/icons/weiss.png").scaled(QSize(20, 20)));
+    return icon;
+}
+
+QIcon Kachel::flagge_bild()
+{
+    static QIcon icon = QIcon(QPixmap(":/new/icons/Flagge.png").scaled(QSize(20, 20)));
+    return icon;
+}
+
+QIcon Kachel::mine_bild()
+{
+    static QIcon icon = QIcon(QPixmap(":/new/icons/Bombe.png").scaled(QSize(20, 20)));
+    return icon;
+}
+
+bool Kachel::ist_aufgedeckt() const
+{
+    return k_maschine.configuration().contains(aufgedeckter_status);
+}
+
+bool Kachel::ist_mine() const
+{
+    return k_ist_mine;
+}
+
+bool Kachel::hat_benachbarte_minen() const
+{
+    return k_benachbarte_mienen_zaehler;
+}
 
 Kachel::Kachel(Kachel_Position position, QWidget* parent)
     : k_position(position)
     , QPushButton(parent)
     , k_ist_mine (false)
+    , k_benachbarte_mienen_zaehler(0)
+    , k_benachbarte_flaggen_zaehler(0)
 {
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -52,7 +86,9 @@ void Kachel::mousePressEvent(QMouseEvent *e)
 
 void Kachel::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (k_klicks == Qt::LeftButton)
+    if (k_klicks == (Qt::LeftButton | Qt::RightButton | Qt::MidButton))
+        emit unClicked();
+    else if (k_klicks == Qt::LeftButton)
         emit linksklick();
     else if (k_klicks == Qt::RightButton)
         emit rechtsklick();
@@ -68,6 +104,8 @@ Kachel_Position Kachel::position() const
 void Kachel::nachbar_hinzufuegen(Kachel *kachel)
 {
     k_nachbarn += kachel;
+    connect(this, &Kachel::nachbarn_aufdecken, kachel, &Kachel::aufdecken, Qt::QueuedConnection);
+    connect(this, &Kachel::unPreviewNeighbors, kachel, &Kachel::unPreview, Qt::QueuedConnection);
 }
 
 QSize Kachel::sizeHint() const
@@ -80,6 +118,18 @@ void Kachel::status_maschine_erstellen()
     nicht_aufgedeckter_status = new QState;
     aufgedeckter_status = new QState;
     markierter_status = new QState;
+    nachbar_status_aufdecken = new QState;
+    nachbar_vorschau_status = new QState;
+    vorschau_status = new QState;
+
+
+
+    nicht_aufgedeckter_status -> addTransition(this, &Kachel::linksklick, aufgedeckter_status);
+    nicht_aufgedeckter_status -> addTransition(this, &Kachel::rechtsklick, markierter_status);
+    nicht_aufgedeckter_status -> addTransition(this, &Kachel::aufdecken, aufgedeckter_status);
+    nicht_aufgedeckter_status -> addTransition(this, &Kachel::vorschau, vorschau_status);
+
+    nachbar_vorschau_status -> addTransition(this, &Kachel::unClicked, nachbar_status_aufdecken);
 
 
     connect(nicht_aufgedeckter_status, &QState::entered, [this]()
@@ -87,16 +137,64 @@ void Kachel::status_maschine_erstellen()
         this->setStyleSheet(nicht_aufgedecktes_Style_Sheet);
     });
 
-    connect(nicht_aufgedeckter_status, &QState::entered, [this]()
+    connect(vorschau_status, &QState::entered, [this]()
+        {
+            this->setStyleSheet(aufgedeckt_Style_Sheet);
+        });
+
+    connect(nachbar_vorschau_status, &QState::entered, [this]()
+        {
+            for (auto nachbar : k_nachbarn)
+                nachbar->vorschau();
+        });
+
+    connect(nachbar_status_aufdecken, &QState::entered, [this]()
+        {
+            if (k_benachbarte_flaggen_zaehler == k_benachbarte_mienen_zaehler && k_benachbarte_mienen_zaehler)
+                nachbarn_aufdecken();
+            else
+                unPreviewNeighbors();
+            emit aufdecken();
+        });
+
+    connect(aufgedeckter_status, &QState::entered, [this]()
     {
-        this->setStyleSheet(nicht_aufgedecktes_Style_Sheet);
+        this -> setIcon(aufgedeckt_bild());
+        this -> setChecked(true);
+        if (!ist_mine())
+        {
+            if (!hat_benachbarte_minen())
+                nachbarn_aufdecken();
+            emit aufgedeckt();
+        }
+        else
+        {
+            emit explodiert();
+            this -> setStyleSheet(aufgedeckt_Style_Sheet);
+            QPushButton::setText("");
+            setIcon(mine_bild());
+        }
     });
+
+    connect(markierter_status, &QState::entered, [this]()
+    {
+        this -> setIcon(flagge_bild());
+        emit markiert(k_ist_mine);
+    });
+
+
 
     k_maschine.addState(nicht_aufgedeckter_status);
     k_maschine.addState(aufgedeckter_status);
     k_maschine.addState(markierter_status);
+    k_maschine.addState(nachbar_status_aufdecken);
+    k_maschine.addState(nachbar_vorschau_status);
     k_maschine.setInitialState(nicht_aufgedeckter_status);
+    k_maschine.addState(vorschau_status);
     k_maschine.start();
+
+
+
 }
 
 void Kachel::zahlen_eintragen()
@@ -137,12 +235,8 @@ void Kachel::zahlen_eintragen()
     QPushButton::setStyleSheet(aufgedeckte_Zahlen_Style_Sheet.arg(farbe));
 }
 
-void Kachel::minen_verteiler(bool val)
+void Kachel::mine_plazieren(bool wert)
 {
-    k_ist_mine = val;
+    k_ist_mine = wert;
 }
 
-void Kachel::minen_aufdecken()
-{
-    //aufdecken aller Minen wenn verloren
-}
