@@ -81,6 +81,7 @@ void Minesweeper::pausieren()
 void Minesweeper::beenden()
 {
     ui->Zeitanzeige->display(0);
+    timer_pausieren();
     //alle felder aufdecken
     //spiel zählt als verloren: Statistikspeicher::instance().verloren(5,5,3);
 }
