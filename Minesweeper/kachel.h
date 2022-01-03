@@ -20,6 +20,8 @@ public:
     Kachel_Position position() const;
 
     void nachbar_hinzufuegen(Kachel* kachel);
+    void minen_verteiler(bool val);
+    void minen_aufdecken();
 
     bool ist_mine();
     bool ist_markiert();
@@ -58,6 +60,8 @@ private:
     QState* nicht_aufgedeckter_status;
     QState* aufgedeckter_status;
     QState* markierter_status;
+
+    bool k_ist_mine;
 
 };
 

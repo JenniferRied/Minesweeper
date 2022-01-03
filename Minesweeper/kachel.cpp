@@ -27,6 +27,7 @@ QString Kachel::aufgedeckte_Zahlen_Style_Sheet =
 Kachel::Kachel(Kachel_Position position, QWidget* parent)
     : k_position(position)
     , QPushButton(parent)
+    , k_ist_mine (false)
 {
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -134,4 +135,14 @@ void Kachel::zahlen_eintragen()
     }*/
 
     QPushButton::setStyleSheet(aufgedeckte_Zahlen_Style_Sheet.arg(farbe));
+}
+
+void Kachel::minen_verteiler(bool val)
+{
+    k_ist_mine = val;
+}
+
+void Kachel::minen_aufdecken()
+{
+    //aufdecken aller Minen wenn verloren
 }
