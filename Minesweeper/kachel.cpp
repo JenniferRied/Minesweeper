@@ -41,6 +41,12 @@ QIcon Kachel::mine_bild()
     return icon;
 }
 
+QIcon Kachel::explosion_bild()
+{
+    static QIcon icon = QIcon(QPixmap(":/new/icons/explosion.png").scaled(QSize(20, 20)));
+    return icon;
+}
+
 bool Kachel::ist_aufgedeckt() const
 {
     return k_maschine.configuration().contains(aufgedeckter_status);
@@ -121,6 +127,7 @@ void Kachel::status_maschine_erstellen()
     nachbar_status_aufdecken = new QState;
     nachbar_vorschau_status = new QState;
     vorschau_status = new QState;
+    deaktiviere_status = new QFinalState;
 
 
 
@@ -128,6 +135,9 @@ void Kachel::status_maschine_erstellen()
     nicht_aufgedeckter_status -> addTransition(this, &Kachel::rechtsklick, markierter_status);
     nicht_aufgedeckter_status -> addTransition(this, &Kachel::aufdecken, aufgedeckter_status);
     nicht_aufgedeckter_status -> addTransition(this, &Kachel::vorschau, vorschau_status);
+    nicht_aufgedeckter_status -> addTransition(this, &Kachel::deaktiviert, deaktiviere_status);
+
+    vorschau_status -> addTransition(this, &Kachel::deaktiviert, deaktiviere_status);
 
     nachbar_vorschau_status -> addTransition(this, &Kachel::unClicked, nachbar_status_aufdecken);
 
@@ -182,6 +192,11 @@ void Kachel::status_maschine_erstellen()
         emit markiert(k_ist_mine);
     });
 
+    connect(deaktiviere_status, &QState::entered, [this]()
+    {
+
+    });
+
 
 
     k_maschine.addState(nicht_aufgedeckter_status);
@@ -189,6 +204,7 @@ void Kachel::status_maschine_erstellen()
     k_maschine.addState(markierter_status);
     k_maschine.addState(nachbar_status_aufdecken);
     k_maschine.addState(nachbar_vorschau_status);
+    k_maschine.addState(deaktiviere_status);
     k_maschine.setInitialState(nicht_aufgedeckter_status);
     k_maschine.addState(vorschau_status);
     k_maschine.start();

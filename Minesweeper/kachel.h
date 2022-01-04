@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QState>
 #include <QStateMachine>
+#include <QFinalState>
 
 struct Kachel_Position
 {
@@ -39,6 +40,7 @@ public:
     static QIcon flagge_bild();
     static QIcon aufgedeckt_bild();
     static QIcon mine_bild();
+    static QIcon explosion_bild();
 
     QList<Kachel*>& nachbarn();
 
@@ -57,6 +59,7 @@ signals:
     void unPreview();
     void unPreviewNeighbors();
     void vorschau();
+    void deaktiviert();
     void markiert(bool);
 
 private:
@@ -79,6 +82,7 @@ private:
     QState* nachbar_status_aufdecken;
     QState* nachbar_vorschau_status;
     QState* vorschau_status;
+    QFinalState* deaktiviere_status;
     bool k_ist_mine;
     unsigned int k_benachbarte_mienen_zaehler;
     unsigned int k_benachbarte_flaggen_zaehler;

@@ -22,6 +22,8 @@ public slots:
 signals:
     void initialisiert();
     void klickt();
+    void sieg();
+    void verloren();
 
 private:
     unsigned int k_reihen;
@@ -35,6 +37,9 @@ private:
     void kacheln_erstellen(QGridLayout*);
     void nachbarn_hinzufuegen();
     void layout_erstellen();
+    void verloren_animation();
+
+    QTimer* explosion_timer;
 };
 
 #endif // SPIELBRETT_H

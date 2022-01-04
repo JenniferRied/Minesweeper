@@ -7,5 +7,6 @@
         <file>Mitte.png</file>
         <file>Rechts.png</file>
         <file>weiss.png</file>
+        <file>explosion.png</file>
     </qresource>
 </RCC>

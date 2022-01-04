@@ -2,6 +2,7 @@
 #include <iostream>
 #include <QGridLayout>
 #include <random>
+#include <QMessageBox>
 #include "minesweeper.h"
 
 
@@ -10,12 +11,43 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
     , k_reihen(reihen)
     , k_spalten(spalten)
     , k_minen_anzahl(minen_anzahl)
+    , explosion_timer(new QTimer(this))
 {
 
     kacheln_erstellen(spielbrett_gridLayout);
     layout_erstellen();
     minen_verteilen();
     nachbarn_hinzufuegen();
+
+    connect(this, &Spielbrett::sieg, [this]()
+        {
+            explosion_timer->setProperty("sieg", true);
+        });
+        connect(this, &Spielbrett::verloren, [this]()
+        {
+            explosion_timer->setProperty("sieg", false);
+        });
+
+    connect(explosion_timer, &QTimer::timeout, [this]()
+            {
+                if (k_minen.isEmpty())
+                {
+                    explosion_timer->stop();
+                    return;
+                }
+
+                Kachel* mine = k_minen.values().front();
+                k_minen.remove(mine);
+
+                if (explosion_timer->property("sieg").toBool())
+                    mine->setIcon(mine->flagge_bild());
+                else
+                {
+                    //if (!m_correctFlags.contains(mine))
+                        mine->setIcon(mine->explosion_bild());                        
+                }
+            });
+
 }
 
 void Spielbrett::layout_erstellen()
@@ -45,10 +77,41 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
             connect(k_kacheln[r][s],SIGNAL(rechtsklick()),this,SLOT(geklickt()));
             connect(k_kacheln[r][s],SIGNAL(beide_gleichzeitig_klick()),this,SLOT(geklickt()));
             connect(k_kacheln[r][s],SIGNAL(mittelklick()),this,SLOT(geklickt()));
+            connect(k_kacheln[r][s], &Kachel::explodiert, this, &Spielbrett::verloren_animation);
+            connect(this, &Spielbrett::verloren, k_kacheln[r][s], &Kachel::deaktiviert);
+            connect(this, &Spielbrett::sieg, k_kacheln[r][s], &Kachel::deaktiviert);
             //connect(k_kacheln[r][s], &Kachel::erster_klick, this ,&Spielbrett::minen_verteilen);
         }
     }
     k_kacheln[0][0]->setDown(true);
+}
+
+void Spielbrett::verloren_animation()
+{
+    Kachel* sender = dynamic_cast<Kachel*>(this->sender());
+    QTimer::singleShot(350, this, [sender]()
+    {
+        sender->setIcon(sender->explosion_bild());
+    });
+    QTimer::singleShot(500, this, [this]()
+    {
+        /*for (auto falsch : falsche_flaggen)               //Kennzeichnung der falsch markierten Felder
+        {
+            wrong->setIcon(falsch->falsch_bild());
+        }*/
+        for (auto mine : k_minen)
+        {
+            disconnect(mine, &Kachel::explodiert, this, &Spielbrett::verloren_animation);
+            //if (!mine->ist_markiert())
+                mine->aufdecken();
+        }
+        emit verloren();
+    });
+
+    QTimer::singleShot(1000, explosion_timer, [this]()
+    {
+        explosion_timer->start(25);
+    });
 }
 
 void Spielbrett::geklickt()
