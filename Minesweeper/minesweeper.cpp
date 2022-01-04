@@ -38,8 +38,12 @@ void Minesweeper::neu()
 
 void Minesweeper::hilfe_oeffnen()
 {
-   Hilfe *hilfe = new Hilfe();
-   hilfe->show();
+    timer_pausieren();
+    ui->spielbrett_widget->hide();
+    Hilfe *hilfe = new Hilfe();
+    hilfe->show();
+    ui->spielbrett_widget->show();
+    timer_fortsetzen();
 }
 
 void Minesweeper::initialisieren()
