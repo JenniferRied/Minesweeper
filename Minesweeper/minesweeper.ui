@@ -52,6 +52,9 @@
        <widget class="QLCDNumber" name="Zeitanzeige"/>
       </item>
       <item>
+       <widget class="QLCDNumber" name="flaggen_anzahl"/>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

@@ -52,6 +52,16 @@ bool Kachel::ist_aufgedeckt() const
     return k_maschine.configuration().contains(aufgedeckter_status);
 }
 
+bool Kachel::ist_nicht_aufgedeckt() const
+{
+    return k_maschine.configuration().contains(nicht_aufgedeckter_status);
+}
+
+bool Kachel::ist_markiert() const
+{
+    return k_maschine.configuration().contains(markierter_status);
+}
+
 bool Kachel::ist_mine() const
 {
     return k_ist_mine;
@@ -60,6 +70,31 @@ bool Kachel::ist_mine() const
 bool Kachel::hat_benachbarte_minen() const
 {
     return k_benachbarte_mienen_zaehler;
+}
+
+unsigned int Kachel::benachbarte_mienen_zaehler() const
+{
+    return k_benachbarte_mienen_zaehler;
+}
+
+void Kachel::erhoehe_anzahl_benachbarter_minen()
+{
+    ++k_benachbarte_mienen_zaehler;
+}
+
+unsigned int Kachel::benachbarte_flaggen_zaehler() const
+{
+    return k_benachbarte_flaggen_zaehler;
+}
+
+void Kachel::erhoehe_anzahl_benachbarter_flaggen()
+{
+    ++k_benachbarte_flaggen_zaehler;
+}
+
+void Kachel::verringere_anzahl_benachbarter_flaggen()
+{
+    --k_benachbarte_flaggen_zaehler;
 }
 
 Kachel::Kachel(Kachel_Position position, QWidget* parent)
@@ -138,9 +173,17 @@ void Kachel::status_maschine_erstellen()
     nicht_aufgedeckter_status -> addTransition(this, &Kachel::deaktiviert, deaktiviere_status);
 
     vorschau_status -> addTransition(this, &Kachel::deaktiviert, deaktiviere_status);
+    vorschau_status->addTransition(this, &Kachel::aufgedeckt, aufgedeckter_status);
+    vorschau_status->addTransition(this, &Kachel::unPreview, nicht_aufgedeckter_status);
+
+    markierter_status->addTransition(this, &Kachel::mittelklick, nicht_aufgedeckter_status);
+
+    aufgedeckter_status->addTransition(this, &Kachel::beide_gleichzeitig_klick, nachbar_vorschau_status);
 
     nachbar_vorschau_status -> addTransition(this, &Kachel::unClicked, nachbar_status_aufdecken);
+    nachbar_vorschau_status->addTransition(this, &Kachel::unPreview, aufgedeckter_status);
 
+    nachbar_status_aufdecken->addTransition(this, &Kachel::aufdecken, aufgedeckter_status);
 
     connect(nicht_aufgedeckter_status, &QState::entered, [this]()
     {
@@ -169,10 +212,12 @@ void Kachel::status_maschine_erstellen()
 
     connect(aufgedeckter_status, &QState::entered, [this]()
     {
+        unPreviewNeighbors();
         this -> setIcon(aufgedeckt_bild());
         this -> setChecked(true);
         if (!ist_mine())
         {
+            zahlen_eintragen();
             if (!hat_benachbarte_minen())
                 nachbarn_aufdecken();
             emit aufgedeckt();
@@ -189,6 +234,8 @@ void Kachel::status_maschine_erstellen()
     connect(markierter_status, &QState::entered, [this]()
     {
         this -> setIcon(flagge_bild());
+        for (auto nachbar : k_nachbarn)
+                nachbar->erhoehe_anzahl_benachbarter_flaggen();
         emit markiert(k_ist_mine);
     });
 
@@ -197,6 +244,13 @@ void Kachel::status_maschine_erstellen()
 
     });
 
+    connect(markierter_status, &QState::exited, [this]()
+    {
+        this->setIcon(QIcon());
+        for(auto nachbar : k_nachbarn)
+                nachbar->verringere_anzahl_benachbarter_flaggen();
+        emit nicht_markiert(k_ist_mine);
+    });
 
 
     k_maschine.addState(nicht_aufgedeckter_status);
@@ -218,7 +272,7 @@ void Kachel::zahlen_eintragen()
     QString farbe;
 
     //Funktion für zählen der benachbarten Minen fehlt noch
-    /*switch(anzahl_benachbarter_minen)
+    switch(k_benachbarte_mienen_zaehler)
     {
     case 1:
         farbe = "blue";
@@ -246,13 +300,17 @@ void Kachel::zahlen_eintragen()
         break;
     default:
         break;
-    }*/
+    }
 
     QPushButton::setStyleSheet(aufgedeckte_Zahlen_Style_Sheet.arg(farbe));
+    if(k_benachbarte_mienen_zaehler)
+        QPushButton::setText(QString::number(k_benachbarte_mienen_zaehler));
 }
 
 void Kachel::mine_plazieren(bool wert)
 {
     k_ist_mine = wert;
+    for (auto nachbar : k_nachbarn)
+            nachbar->erhoehe_anzahl_benachbarter_minen();
 }
 

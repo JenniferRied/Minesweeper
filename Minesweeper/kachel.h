@@ -26,11 +26,13 @@ public:
     void klicken();
 
     bool ist_mine() const;
-    bool ist_markiert();
+    bool ist_markiert() const;
     bool ist_aufgedeckt() const;
+    bool ist_nicht_aufgedeckt() const;
     bool hat_benachbarte_minen() const;
 
     unsigned int benachbarte_mienen_zaehler() const;
+    unsigned int benachbarte_flaggen_zaehler() const;
 
     virtual void mousePressEvent(QMouseEvent* e) override;
     virtual void mouseReleaseEvent(QMouseEvent* e) override;
@@ -43,6 +45,12 @@ public:
     static QIcon explosion_bild();
 
     QList<Kachel*>& nachbarn();
+
+public slots:
+
+    void erhoehe_anzahl_benachbarter_flaggen();
+    void verringere_anzahl_benachbarter_flaggen();
+    void erhoehe_anzahl_benachbarter_minen();
 
 signals:
 
@@ -61,6 +69,7 @@ signals:
     void vorschau();
     void deaktiviert();
     void markiert(bool);
+    void nicht_markiert(bool);
 
 private:
     static QString nicht_aufgedecktes_Style_Sheet;

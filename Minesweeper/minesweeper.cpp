@@ -1,6 +1,7 @@
 #include "minesweeper.h"
 #include "ui_minesweeper.h"
 #include "hilfe.h"
+#include "einstellungen.h"
 #include "spielbrett.h"
 #include <QVBoxLayout>
 #include "statistikdialog.h"
@@ -25,6 +26,7 @@ Minesweeper::Minesweeper(QWidget *parent)
     connect(ui->pause_button, SIGNAL(clicked()), this, SLOT(pausieren()));
     connect(ui->beenden_button, SIGNAL(clicked()), this, SLOT(beenden()));
     connect(ui->actionStatistik, SIGNAL(triggered()), this, SLOT(statistik_oeffnen()));
+    connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
 }
 
 void Minesweeper::neu()
@@ -44,6 +46,13 @@ void Minesweeper::hilfe_oeffnen()
     hilfe->show();
     ui->spielbrett_widget->show();
     timer_fortsetzen();
+}
+
+void Minesweeper::einstellungen_oeffnen()
+{
+    Einstellungen *einstellungen = new Einstellungen();
+    einstellungen->show();
+    connect(einstellungen, SIGNAL(closed()), this, SLOT(setze_schwierigkeit()));
 }
 
 void Minesweeper::initialisieren()
@@ -135,6 +144,44 @@ void Minesweeper::timer_timeout()
 {
     zeit++;
     ui->Zeitanzeige->display(zeit);
+}
+
+void Minesweeper::setze_schwierigkeit()
+{
+    Einstellungen *einstellungen = new Einstellungen();
+
+    unsigned int schwierigkeit = einstellungen->get_schwierigkeit();
+    unsigned int custom_reihen = einstellungen->get_reihenanzahl();
+    unsigned int custom_spalten = einstellungen->get_spaltenanzahl();
+    unsigned int custom_minen = einstellungen->get_minenanzahl();
+
+    switch(schwierigkeit)
+    {
+    case 0:
+        reihen = 9;
+        spalten = 9;
+        minen_anzahl = 10;
+        break;
+    case 1:
+        reihen = 16;
+        spalten = 16;
+        minen_anzahl = 40;
+        break;
+    case 2:
+        reihen = 16;
+        spalten = 30;
+        minen_anzahl = 99;
+        break;
+    case 3:
+        reihen = custom_reihen;
+        spalten = custom_spalten;
+        minen_anzahl = custom_minen;
+    default:
+        break;
+    }
+
+    initialisieren();
+    adjustSize();
 }
 
 Minesweeper::~Minesweeper()
