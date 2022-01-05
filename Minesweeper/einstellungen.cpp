@@ -25,8 +25,8 @@ unsigned int Einstellungen::get_minenanzahl()
 
 void Einstellungen::abgebrochen()
 {
-    QDialog::close();
     emit closed();
+    QDialog::close();
 }
 
 unsigned int Einstellungen::get_schwierigkeit()
@@ -58,8 +58,8 @@ void Einstellungen::uebernehmen()
     get_reihenanzahl();
     get_spaltenanzahl();
     get_schwierigkeit();
-    QDialog::close();
     emit closed();
+    QDialog::close();
 }
 
 Einstellungen::~Einstellungen()

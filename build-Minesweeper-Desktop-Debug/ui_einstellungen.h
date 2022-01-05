@@ -210,10 +210,10 @@ public:
     {
         Einstellungen->setWindowTitle(QApplication::translate("Einstellungen", "Einstellungen", nullptr));
         label->setText(QApplication::translate("Einstellungen", "Schwierigkeit:", nullptr));
-        schwierigkeit_comboBox->setItemText(0, QApplication::translate("Einstellungen", "Leicht", nullptr));
-        schwierigkeit_comboBox->setItemText(1, QApplication::translate("Einstellungen", "Mittel", nullptr));
-        schwierigkeit_comboBox->setItemText(2, QApplication::translate("Einstellungen", "Schwer", nullptr));
-        schwierigkeit_comboBox->setItemText(3, QApplication::translate("Einstellungen", "Benutzerdefiniert", nullptr));
+        schwierigkeit_comboBox->setItemText(0, QApplication::translate("Einstellungen", "Benutzerdefiniert", nullptr));
+        schwierigkeit_comboBox->setItemText(1, QApplication::translate("Einstellungen", "Leicht", nullptr));
+        schwierigkeit_comboBox->setItemText(2, QApplication::translate("Einstellungen", "Mittel", nullptr));
+        schwierigkeit_comboBox->setItemText(3, QApplication::translate("Einstellungen", "Schwer", nullptr));
 
         label_2->setText(QApplication::translate("Einstellungen", "Reihenanzahl:", nullptr));
         label_3->setText(QApplication::translate("Einstellungen", "Spaltenanzahl:", nullptr));
