@@ -208,7 +208,7 @@ public:
 
     void retranslateUi(QDialog *Einstellungen)
     {
-        Einstellungen->setWindowTitle(QApplication::translate("Einstellungen", "Dialog", nullptr));
+        Einstellungen->setWindowTitle(QApplication::translate("Einstellungen", "Einstellungen", nullptr));
         label->setText(QApplication::translate("Einstellungen", "Schwierigkeit:", nullptr));
         schwierigkeit_comboBox->setItemText(0, QApplication::translate("Einstellungen", "Leicht", nullptr));
         schwierigkeit_comboBox->setItemText(1, QApplication::translate("Einstellungen", "Mittel", nullptr));
