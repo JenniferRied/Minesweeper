@@ -28,6 +28,8 @@ QString Kachel::aufgedeckte_Zahlen_Style_Sheet =
         "   border: 1px solid darkgray;"
         "}";
 
+//Hier werden die Icons für die Kacheln festgelegt
+
 QIcon Kachel::aufgedeckt_bild()
 {
     static QIcon icon = QIcon();
@@ -52,6 +54,8 @@ QIcon Kachel::explosion_bild()
     return icon;
 }
 
+//Hier werden die verschiedenen Zustände der Kacheln abgefragt
+
 bool Kachel::ist_aufgedeckt() const
 {
     return k_maschine.configuration().contains(aufgedeckter_status);
@@ -71,6 +75,8 @@ bool Kachel::ist_mine() const
 {
     return k_ist_mine;
 }
+
+//Hier sind die Zähler für Minen und Flaggen
 
 bool Kachel::hat_benachbarte_minen() const
 {
@@ -111,6 +117,8 @@ void Kachel::verringere_anzahl_benachbarter_flaggen()
 {
     --k_benachbarte_flaggen_zaehler;
 }
+
+
 
 Kachel::Kachel(Kachel_Position position, QWidget* parent)
     : k_position(position)

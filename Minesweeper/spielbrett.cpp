@@ -21,6 +21,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
 
     connect(this, &Spielbrett::sieg, [this]()
         {
+            ende(false);
             explosion_timer->setProperty("sieg", true);
         });
         connect(this, &Spielbrett::verloren, [this]()
@@ -125,6 +126,8 @@ void Spielbrett::verloren_animation()
     });
 }
 
+//Hier wird eine MessageBox für Gewonnen oder verloren aufgerufen
+
 void Spielbrett::ende(bool spiel_verloren)
 {
     if (spiel_verloren)
@@ -134,6 +137,12 @@ void Spielbrett::ende(bool spiel_verloren)
         runde_verloren.exec();
         Statistikspeicher::instance().verloren(k_reihen,k_spalten,k_minen_anzahl);
     }
+    if(!spiel_verloren)
+    {
+        QMessageBox runde_verloren;
+        runde_verloren.setText("Du hast Gewonnen!");
+        runde_verloren.exec();
+    }
 }
 
 //Wenn die Funktion geklickt aufgerufen wird, wird das Signal klickt abgegeben.
@@ -141,6 +150,8 @@ void Spielbrett::geklickt()
 {
     emit klickt();
 }
+
+//Hier werden die Nachbarn der einzelnen Kacheln hinzugefügt
 
 void Spielbrett::nachbarn_hinzufuegen()
 {
