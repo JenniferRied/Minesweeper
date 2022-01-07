@@ -3,6 +3,7 @@
 #include <random>
 #include <QMessageBox>
 #include "minesweeper.h"
+#include "statistikspeicher.h"
 
 
 Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout)
@@ -131,6 +132,7 @@ void Spielbrett::ende(bool spiel_verloren)
         QMessageBox runde_verloren;
         runde_verloren.setText("Du hast leider Verloren!");
         runde_verloren.exec();
+        Statistikspeicher::instance().verloren(k_reihen,k_spalten,k_minen_anzahl);
     }
 }
 

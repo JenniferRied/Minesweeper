@@ -152,8 +152,7 @@ void Minesweeper::beenden()
     ui->Zeitanzeige->display(0);
     timer_pausieren();
     ui->pause_button->setText("Pause");
-    //spielbrett->verloren_animation(); //erst rein, wenn das Aufdecken richtig funktiioniert
-    Statistikspeicher::instance().verloren(reihen,spalten,minen_anzahl);
+    spielbrett->verloren_animation();
 }
 
 //Bei dieser Funktion wird vor dem anzeigen des Statistikfensters der timer pausiert und das Spielfeld versteckt.
