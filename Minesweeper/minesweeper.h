@@ -31,7 +31,7 @@ public slots:
     void timer_timeout();
     void kachel_geklickt();
     void flaggen_zaehler(int);
-    void timer_pausieren();
+    void spielende();
 
 signals:
     void starte_spiel();
@@ -49,11 +49,12 @@ private:
     int zeit = 0;
     QTimer* timer = NULL;
     bool pausiert = false;
-
+    bool am_spielen = false;
     bool erster_klick = true;
 
     void timer_starten();
     void timer_fortsetzen();
+    void timer_pausieren();
 
 };
 #endif // MINESWEEPER_H

@@ -121,7 +121,7 @@ void Minesweeper::initialisieren()
 
     connect(spielbrett, &Spielbrett::initialisiert, this, &Minesweeper::starte_spiel, Qt::UniqueConnection);
     connect(spielbrett, SIGNAL(klickt()), this, SLOT(kachel_geklickt()));
-    connect(spielbrett, SIGNAL(timer_anhalten()),this, SLOT(timer_pausieren()));
+    connect(spielbrett, SIGNAL(timer_anhalten()),this, SLOT(spielende()));
     connect(this, SIGNAL(beendet()),spielbrett,SLOT(alle_aufdecken()));
 
     haupt_Frame_Layout->addWidget(spielbrett);
@@ -139,16 +139,23 @@ void Minesweeper::kachel_geklickt()
     }
 }
 
+void Minesweeper::spielende()
+{
+    am_spielen = false;
+    timer_pausieren();
+}
+
 //Bei Klick auf den Butteon pause, wird der Timer angehalten, das Spielfeld versteckt und der Text des Button auf weiter gesetzt.
 //Bei erneuten Klick wird alles wieder auf den vorherigen Zustand gestellt.
 void Minesweeper::pausieren()
 {
-    if (pausiert)
+    if (pausiert && am_spielen)
     {
         timer_fortsetzen();
         ui->spielbrett_widget->show();
         ui->pause_button->setText("Pause");
-    }else{
+    }else if(!pausiert && am_spielen)
+    {
         ui->spielbrett_widget->hide();
         timer_pausieren();
         ui->pause_button->setText("Weiter");
@@ -158,10 +165,13 @@ void Minesweeper::pausieren()
 //Wird der Button beenden geklickt, so wird der Timer pausiert und auf null gestellt, das Spielfeld aufgedeckt und das Spiel als verloren gewertet.
 void Minesweeper::beenden()
 {
-    ui->Zeitanzeige->display(0);
-    timer_pausieren();
-    ui->pause_button->setText("Pause");
-    emit beendet();
+    if(am_spielen)
+    {
+        ui->Zeitanzeige->display(0);
+        timer_pausieren();
+        ui->pause_button->setText("Pause");
+        emit beendet();
+    }
 }
 
 //Bei dieser Funktion wird vor dem anzeigen des Statistikfensters der timer pausiert und das Spielfeld versteckt.
@@ -188,6 +198,7 @@ void Minesweeper::timer_starten()
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
     timer->start(1000);
+    am_spielen = true;
 }
 
 //Disee Funktion pausiert den Timer, wenn er noch nicht pausiert ist.
