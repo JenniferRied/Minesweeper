@@ -83,36 +83,49 @@ bool Kachel::hat_benachbarte_minen() const
     return k_benachbarte_mienen_zaehler;
 }
 
+//Die Funktion gibt die Anzahl benachbarter Minen zurück.
 unsigned int Kachel::benachbarte_mienen_zaehler() const
 {
     return k_benachbarte_mienen_zaehler;
 }
 
+//Die Funktion erhoeht die Anzahl der benachbarten Minen
 void Kachel::erhoehe_anzahl_benachbarter_minen()
 {
     ++k_benachbarte_mienen_zaehler;
 }
 
+//Die Funktion erhoeht die Anzahl der Flaggen.
 void Kachel::erhoehe_anzahl_flaggen()
 {
     ++k_flaggen_zaehler;
 }
 
+//Die Funktion verringert die Anzahl der Flaggen.
+void Kachel::verringere_anzahl_flaggen()
+{
+    --k_flaggen_zaehler;
+}
+
+//Die Funktion gibt die Anzahl der Flaggen zurück.
 unsigned int Kachel::flaggen_zaehler() const
 {
     return k_flaggen_zaehler;
 }
 
+//Die Funktion gibt die Anzahl benachbarter Flaggen zurück.
 unsigned int Kachel::benachbarte_flaggen_zaehler() const
 {
     return k_benachbarte_flaggen_zaehler;
 }
 
+//Die Funktion erhoeht die Anzahl der benachbarten Flaggen
 void Kachel::erhoehe_anzahl_benachbarter_flaggen()
 {
     ++k_benachbarte_flaggen_zaehler;
 }
 
+//Die Funktion verringert die Anzahl der benachbarten Flaggen
 void Kachel::verringere_anzahl_benachbarter_flaggen()
 {
     --k_benachbarte_flaggen_zaehler;
@@ -268,6 +281,7 @@ void Kachel::status_maschine_erstellen()
         this -> setIcon(flagge_bild());
         for (auto nachbar : k_nachbarn)
                 nachbar->erhoehe_anzahl_benachbarter_flaggen();
+        erhoehe_anzahl_flaggen();
         emit markiert(k_ist_mine);
     });
 
@@ -281,6 +295,7 @@ void Kachel::status_maschine_erstellen()
         this->setIcon(QIcon());
         for(auto nachbar : k_nachbarn)
                 nachbar->verringere_anzahl_benachbarter_flaggen();
+        verringere_anzahl_flaggen();
         emit nicht_markiert(k_ist_mine);
     });
 

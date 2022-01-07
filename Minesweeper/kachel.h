@@ -54,6 +54,7 @@ public slots:
     void erhoehe_anzahl_benachbarter_flaggen();
     void erhoehe_anzahl_flaggen();
     void verringere_anzahl_benachbarter_flaggen();
+    void verringere_anzahl_flaggen();
     void erhoehe_anzahl_benachbarter_minen();
 
 signals:

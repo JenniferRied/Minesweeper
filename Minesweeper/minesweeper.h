@@ -30,8 +30,8 @@ public slots:
     void statistik_oeffnen();
     void timer_timeout();
     void kachel_geklickt();
-    void flaggen_zaehler(int);
     void spielende();
+    void flaggen_zaehler();
 
 signals:
     void starte_spiel();

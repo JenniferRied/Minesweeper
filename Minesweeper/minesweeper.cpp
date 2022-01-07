@@ -33,11 +33,10 @@ Minesweeper::Minesweeper(QWidget *parent)
     connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
 }
 
-//Hier wird die Flaggenanzahl auf der Ui angezeigt
-
-void Minesweeper::flaggen_zaehler(int anzahl)
+void Minesweeper::flaggen_zaehler()
 {
-    ui->flaggen_anzahl->display(anzahl);
+    //int flaggen_anzahl = Hier Funktion Kachel::flaggen_zaehler() aufrufen (Instanz fehlt noch);
+    //ui->flaggen_anzahl->display(flaggen_anzahl);
 }
 
 //Wenn der Button neu geklickt wird, wird der timer angehalten und auf null gesetzt, zwei boolean-Werte auf den Anfangszustand gesetzt und das neue Spiel initialisiert.
@@ -63,8 +62,8 @@ void Minesweeper::hilfe_oeffnen()
     timer_fortsetzen();
 }
 
-//Hier wird das Einstellungsfenster geöffnet
-
+//Das Einstellungsfenster wird über Extras->Einstellungen aufgerufen. Anhand der Auswahl des Schwierigkeitsgrades mithilfe der Combobox wird die neue Reihen-, Spalten und-
+//Minenanzahl bestimmt. Durch das Betätigen des Akzeptieren-Buttons wird das Spielbrett neu initialisiert.
 void Minesweeper::einstellungen_oeffnen()
 {
     Einstellungen *einstellungen = new Einstellungen();
