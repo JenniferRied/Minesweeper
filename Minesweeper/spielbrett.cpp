@@ -16,8 +16,8 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
 
     kacheln_erstellen(spielbrett_gridLayout);
     layout_erstellen();
-    minen_verteilen();
     nachbarn_hinzufuegen();
+    minen_verteilen();
 
     connect(this, &Spielbrett::sieg, [this]()
         {
@@ -43,13 +43,13 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
                     mine->setIcon(mine->flagge_bild());
                 else
                 {
-                    //if (!m_correctFlags.contains(mine))
                         mine->setIcon(mine->explosion_bild());                        
                 }
             });
 
 }
 
+//erstellen des Layouts
 void Spielbrett::layout_erstellen()
 {
     this->setAttribute(Qt::WA_LayoutUsesWidgetRect);
@@ -63,6 +63,7 @@ void Spielbrett::layout_erstellen()
     this->setLayout(layout);
 }
 
+//erstellen jeder einzelnen Kachel
 void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
 {
     for (unsigned int r = 0; r < k_reihen; r++)
@@ -80,12 +81,12 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
             connect(k_kacheln[r][s], &Kachel::explodiert, this, &Spielbrett::verloren_animation);
             connect(this, &Spielbrett::verloren, k_kacheln[r][s], &Kachel::deaktiviert);
             connect(this, &Spielbrett::sieg, k_kacheln[r][s], &Kachel::deaktiviert);
-            //connect(k_kacheln[r][s], &Kachel::erster_klick, this ,&Spielbrett::minen_verteilen);
         }
     }
     k_kacheln[0][0]->setDown(true);
 }
 
+//explodieren der Bomben nacheinander
 void Spielbrett::verloren_animation()
 {
     Kachel* sender = dynamic_cast<Kachel*>(this->sender());
@@ -95,10 +96,6 @@ void Spielbrett::verloren_animation()
     });
     QTimer::singleShot(500, this, [this]()
     {
-        /*for (auto falsch : falsche_flaggen)               //Kennzeichnung der falsch markierten Felder
-        {
-            wrong->setIcon(falsch->falsch_bild());
-        }*/
         for (auto mine : k_minen)
         {
             disconnect(mine, &Kachel::explodiert, this, &Spielbrett::verloren_animation);
@@ -150,6 +147,7 @@ void Spielbrett::nachbarn_hinzufuegen()
     }
 }
 
+//Minen in einer QList generieren
 void Spielbrett::minen_verteilen()
 {
 
