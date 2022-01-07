@@ -7,7 +7,6 @@
 #include <QVBoxLayout>
 #include "statistikdialog.h"
 #include "statistikspeicher.h"
-#include <iostream>
 #include <QAction>
 
 //Konstruktor der Klasse Minesweeper.
@@ -32,7 +31,7 @@ Minesweeper::Minesweeper(QWidget *parent)
     ui->flaggen_icon->setStyleSheet(button_stylesheet);
     ui->minen_icon->setIcon(*bombe);
     ui->minen_icon->setStyleSheet(button_stylesheet);
-    ui->minen_anzahl->display(minen);
+
 
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
     connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(neu()));
@@ -40,12 +39,13 @@ Minesweeper::Minesweeper(QWidget *parent)
     connect(ui->beenden_button, SIGNAL(clicked()), this, SLOT(beenden()));
     connect(ui->actionStatistik, SIGNAL(triggered()), this, SLOT(statistik_oeffnen()));
     connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
+
 }
 
 void Minesweeper::flaggen_zaehler()
 {
-    //int flaggen_anzahl = Hier Funktion Kachel::flaggen_zaehler() aufrufen (Instanz fehlt noch);
-    //ui->flaggen_anzahl->display(flaggen_anzahl);
+    flaggen = spielbrett->anzahl_flaggen + 1;
+    ui->flaggen_anzahl->display(flaggen);
 }
 
 //Wenn der Button neu geklickt wird, wird der timer angehalten und auf null gesetzt, zwei boolean-Werte auf den Anfangszustand gesetzt und das neue Spiel initialisiert.
@@ -141,6 +141,8 @@ void Minesweeper::initialisieren()
 
     haupt_Frame_Layout->setSizeConstraint(QLayout::SetFixedSize);
 
+    ui->minen_anzahl->display(minen);
+    connect(spielbrett, SIGNAL(wurde_markiert()), this, SLOT(flaggen_zaehler()));
 }
 
 //Diese Funktion wird bei jeden Klick auf eine Kachel aufgerufen und wenn dieser Klick der erste war, wird der Timer gestartet.

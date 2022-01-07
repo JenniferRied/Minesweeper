@@ -37,6 +37,7 @@ signals:
     void starte_spiel();
     void beendet();
 
+
 private:
 
     QFrame* mainFrame;
@@ -47,6 +48,7 @@ private:
     unsigned int minen_anzahl;
 
     int minen;
+    int flaggen;
     int zeit = 0;
     QTimer* timer = NULL;
     bool pausiert = false;

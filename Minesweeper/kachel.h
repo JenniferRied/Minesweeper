@@ -25,8 +25,7 @@ public:
     void minen_aufdecken();
     void klicken();
 
-    bool ist_mine() const;
-    bool ist_markiert() const;
+
     bool ist_aufgedeckt() const;
     bool ist_nicht_aufgedeckt() const;
     bool hat_benachbarte_minen() const;
@@ -50,7 +49,8 @@ public:
 
 
 public slots:
-
+    bool ist_mine() const;
+    bool ist_markiert() const;
     void erhoehe_anzahl_benachbarter_flaggen();
     void erhoehe_anzahl_flaggen();
     void verringere_anzahl_benachbarter_flaggen();
@@ -58,6 +58,7 @@ public slots:
     void erhoehe_anzahl_benachbarter_minen();
 
 signals:
+
 
     void unClicked();
     void erster_klick(Kachel*);

@@ -1,7 +1,7 @@
 #include "kachel.h"
 #include "minesweeper.h"
+#include "spielbrett.h"
 #include <QDebug>
-#include <iostream>
 #include <QMouseEvent>
 
 //Hier werden die verschiedenen Stylesheets der Kacheln festgelegt
@@ -144,6 +144,7 @@ Kachel::Kachel(Kachel_Position position, QWidget* parent)
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setCheckable(true);
+
 }
 
 //Hier werden die Maussignale abgefangen
@@ -283,6 +284,7 @@ void Kachel::status_maschine_erstellen()
                 nachbar->erhoehe_anzahl_benachbarter_flaggen();
         erhoehe_anzahl_flaggen();
         emit markiert(k_ist_mine);
+
     });
 
     connect(deaktiviere_status, &QState::entered, [this]()

@@ -18,6 +18,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
     layout_erstellen();
     nachbarn_hinzufuegen();
     minen_verteilen();
+    anzahl_flaggen = 0;
 
     connect(this, &Spielbrett::sieg, [this]()
         {
@@ -96,6 +97,7 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
             connect(k_kacheln[r][s], &Kachel::explodiert, this, &Spielbrett::verloren_animation);
             connect(this, &Spielbrett::verloren, k_kacheln[r][s], &Kachel::deaktiviert);
             connect(this, &Spielbrett::sieg, k_kacheln[r][s], &Kachel::deaktiviert);
+            connect(k_kacheln[r][s], SIGNAL(markiert(bool)), this, SLOT(gewonnen()));
         }
     }
     k_kacheln[0][0]->setDown(true);
@@ -206,7 +208,7 @@ void Spielbrett::nachbarn_hinzufuegen()
 void Spielbrett::minen_verteilen()
 {
 
-    QList<Kachel*> kacheln;
+
     QSet <Kachel*> fertig;
 
     for (unsigned int reihe = 0; reihe < k_reihen; ++reihe)
@@ -230,5 +232,18 @@ void Spielbrett::minen_verteilen()
         k_minen.insert(kacheln[i]);
     }
     emit initialisiert();
+}
+
+void Spielbrett::gewonnen()
+{
+
+    emit wurde_markiert();
+    ++anzahl_flaggen;
+
+    if(anzahl_flaggen == k_minen_anzahl)
+    {
+        //emit sieg();
+    }
+
 }
 

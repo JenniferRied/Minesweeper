@@ -18,11 +18,13 @@ public:
 
     void verloren_animation();
     void ende(bool);
+    unsigned int anzahl_flaggen;
 
 public slots:
     void geklickt();
     void minen_verteilen();
     void alle_aufdecken();
+    void gewonnen();
 
 signals:
     void initialisiert();
@@ -30,11 +32,13 @@ signals:
     void sieg();
     void verloren();
     void timer_anhalten();
+    void wurde_markiert();
 
 private:
     unsigned int k_reihen;
     unsigned int k_spalten;
     unsigned int k_minen_anzahl;
+
 
     QList<QList<Kachel*>> k_kacheln;
     QSet<Kachel*> k_minen;
