@@ -227,7 +227,7 @@ void Minesweeper::timer_starten()
 //Disee Funktion pausiert den Timer, wenn er noch nicht pausiert ist.
 void Minesweeper::timer_pausieren()
 {
-    if(timer && !pausiert)
+    if(timer && !pausiert && am_spielen)
     {
         timer->stop();
         pausiert = true;
@@ -237,7 +237,7 @@ void Minesweeper::timer_pausieren()
 //Diese Funktion setzt den timer fort, wennn er pausiert ist.
 void Minesweeper::timer_fortsetzen()
 {
-    if(timer && pausiert)
+    if(timer && pausiert && am_spielen)
     {
         timer->start();
         pausiert = false;
