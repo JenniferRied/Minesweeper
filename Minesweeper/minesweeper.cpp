@@ -20,10 +20,19 @@ Minesweeper::Minesweeper(QWidget *parent)
     reihen = 20;
     spalten = 20;
     minen_anzahl = 50;
-
+    minen = minen_anzahl;
     initialisieren();
-    Minesweeper::adjustSize();
 
+
+    QString button_stylesheet = "border: none";
+    QIcon* bombe = new QIcon(":/new/icons/Bombe.png");
+    QIcon* flagge = new QIcon(":/new/icons/Flagge.png");
+
+    ui->flaggen_icon->setIcon(*flagge);
+    ui->flaggen_icon->setStyleSheet(button_stylesheet);
+    ui->minen_icon->setIcon(*bombe);
+    ui->minen_icon->setStyleSheet(button_stylesheet);
+    ui->minen_anzahl->display(minen);
 
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
     connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(neu()));
@@ -81,21 +90,25 @@ void Minesweeper::einstellungen_oeffnen()
         reihen = 9;
         spalten = 9;
         minen_anzahl = 10;
+        minen = minen_anzahl;
         break;
     case 1:
         reihen = 16;
         spalten = 16;
         minen_anzahl = 40;
+        minen = minen_anzahl;
         break;
     case 2:
         reihen = 16;
         spalten = 30;
         minen_anzahl = 99;
+        minen = minen_anzahl;
         break;
     case 3:
         reihen = custom_reihen;
         spalten = custom_spalten;
         minen_anzahl = custom_minen;
+        minen = minen_anzahl;
     default:
         break;
     }
@@ -109,6 +122,7 @@ void Minesweeper::einstellungen_oeffnen()
 
 void Minesweeper::initialisieren()
 {
+    Minesweeper::adjustSize();
     if(spielbrett != nullptr)
     {
         delete spielbrett;
@@ -125,7 +139,8 @@ void Minesweeper::initialisieren()
 
     haupt_Frame_Layout->addWidget(spielbrett);
 
-    haupt_Frame_Layout->setSizeConstraint(QLayout::SetNoConstraint);
+    haupt_Frame_Layout->setSizeConstraint(QLayout::SetFixedSize);
+
 }
 
 //Diese Funktion wird bei jeden Klick auf eine Kachel aufgerufen und wenn dieser Klick der erste war, wird der Timer gestartet.

@@ -73,6 +73,7 @@ void Spielbrett::layout_erstellen()
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
+    adjustSize();
 
     this->setLayout(layout);
 }

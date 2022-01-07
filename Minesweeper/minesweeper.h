@@ -46,6 +46,7 @@ private:
     unsigned int spalten;
     unsigned int minen_anzahl;
 
+    int minen;
     int zeit = 0;
     QTimer* timer = NULL;
     bool pausiert = false;

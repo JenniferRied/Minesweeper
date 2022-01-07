@@ -52,20 +52,24 @@
        <widget class="QLCDNumber" name="Zeitanzeige"/>
       </item>
       <item>
+       <widget class="QPushButton" name="flaggen_icon">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLCDNumber" name="flaggen_anzahl"/>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QPushButton" name="minen_icon">
+        <property name="text">
+         <string/>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="minen_anzahl"/>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
@@ -110,6 +114,9 @@
        <enum>QFrame::Plain</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
+       </property>
        <item row="0" column="0">
         <widget class="QWidget" name="spielbrett_widget" native="true">
          <property name="maximumSize">
@@ -122,7 +129,7 @@
           <item>
            <layout class="QGridLayout" name="spielbrett_gridLayout">
             <property name="sizeConstraint">
-             <enum>QLayout::SetFixedSize</enum>
+             <enum>QLayout::SetMinimumSize</enum>
             </property>
             <property name="spacing">
              <number>0</number>
