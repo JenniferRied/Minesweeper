@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Kachel_t {
-    QByteArrayData data[22];
-    char stringdata0[333];
+    QByteArrayData data[23];
+    char stringdata0[356];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -51,8 +51,9 @@ QT_MOC_LITERAL(16, 188, 11), // "deaktiviert"
 QT_MOC_LITERAL(17, 200, 8), // "markiert"
 QT_MOC_LITERAL(18, 209, 14), // "nicht_markiert"
 QT_MOC_LITERAL(19, 224, 35), // "erhoehe_anzahl_benachbarter_f..."
-QT_MOC_LITERAL(20, 260, 38), // "verringere_anzahl_benachbarte..."
-QT_MOC_LITERAL(21, 299, 33) // "erhoehe_anzahl_benachbarter_m..."
+QT_MOC_LITERAL(20, 260, 22), // "erhoehe_anzahl_flaggen"
+QT_MOC_LITERAL(21, 283, 38), // "verringere_anzahl_benachbarte..."
+QT_MOC_LITERAL(22, 322, 33) // "erhoehe_anzahl_benachbarter_m..."
 
     },
     "Kachel\0unClicked\0\0erster_klick\0Kachel*\0"
@@ -62,6 +63,7 @@ QT_MOC_LITERAL(21, 299, 33) // "erhoehe_anzahl_benachbarter_m..."
     "unPreviewNeighbors\0vorschau\0deaktiviert\0"
     "markiert\0nicht_markiert\0"
     "erhoehe_anzahl_benachbarter_flaggen\0"
+    "erhoehe_anzahl_flaggen\0"
     "verringere_anzahl_benachbarter_flaggen\0"
     "erhoehe_anzahl_benachbarter_minen"
 };
@@ -73,7 +75,7 @@ static const uint qt_meta_data_Kachel[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      19,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -81,27 +83,28 @@ static const uint qt_meta_data_Kachel[] = {
       16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  109,    2, 0x06 /* Public */,
-       3,    1,  110,    2, 0x06 /* Public */,
-       5,    0,  113,    2, 0x06 /* Public */,
-       6,    0,  114,    2, 0x06 /* Public */,
-       7,    0,  115,    2, 0x06 /* Public */,
-       8,    0,  116,    2, 0x06 /* Public */,
-       9,    0,  117,    2, 0x06 /* Public */,
-      10,    0,  118,    2, 0x06 /* Public */,
-      11,    0,  119,    2, 0x06 /* Public */,
-      12,    0,  120,    2, 0x06 /* Public */,
-      13,    0,  121,    2, 0x06 /* Public */,
-      14,    0,  122,    2, 0x06 /* Public */,
-      15,    0,  123,    2, 0x06 /* Public */,
-      16,    0,  124,    2, 0x06 /* Public */,
-      17,    1,  125,    2, 0x06 /* Public */,
-      18,    1,  128,    2, 0x06 /* Public */,
+       1,    0,  114,    2, 0x06 /* Public */,
+       3,    1,  115,    2, 0x06 /* Public */,
+       5,    0,  118,    2, 0x06 /* Public */,
+       6,    0,  119,    2, 0x06 /* Public */,
+       7,    0,  120,    2, 0x06 /* Public */,
+       8,    0,  121,    2, 0x06 /* Public */,
+       9,    0,  122,    2, 0x06 /* Public */,
+      10,    0,  123,    2, 0x06 /* Public */,
+      11,    0,  124,    2, 0x06 /* Public */,
+      12,    0,  125,    2, 0x06 /* Public */,
+      13,    0,  126,    2, 0x06 /* Public */,
+      14,    0,  127,    2, 0x06 /* Public */,
+      15,    0,  128,    2, 0x06 /* Public */,
+      16,    0,  129,    2, 0x06 /* Public */,
+      17,    1,  130,    2, 0x06 /* Public */,
+      18,    1,  133,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      19,    0,  131,    2, 0x0a /* Public */,
-      20,    0,  132,    2, 0x0a /* Public */,
-      21,    0,  133,    2, 0x0a /* Public */,
+      19,    0,  136,    2, 0x0a /* Public */,
+      20,    0,  137,    2, 0x0a /* Public */,
+      21,    0,  138,    2, 0x0a /* Public */,
+      22,    0,  139,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -122,6 +125,7 @@ static const uint qt_meta_data_Kachel[] = {
     QMetaType::Void, QMetaType::Bool,    2,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -152,8 +156,9 @@ void Kachel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 14: _t->markiert((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 15: _t->nicht_markiert((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 16: _t->erhoehe_anzahl_benachbarter_flaggen(); break;
-        case 17: _t->verringere_anzahl_benachbarter_flaggen(); break;
-        case 18: _t->erhoehe_anzahl_benachbarter_minen(); break;
+        case 17: _t->erhoehe_anzahl_flaggen(); break;
+        case 18: _t->verringere_anzahl_benachbarter_flaggen(); break;
+        case 19: _t->erhoehe_anzahl_benachbarter_minen(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -313,13 +318,13 @@ int Kachel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 19)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 20;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 19)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 20;
     }
     return _id;
 }

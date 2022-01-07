@@ -9,15 +9,19 @@ class Spielbrett : public QFrame
 {
     Q_OBJECT
 public:
-    Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout);
+    Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout);
+    virtual ~Spielbrett();
 
     unsigned int reihen() const{return k_reihen; };
     unsigned int spalten() const{return k_spalten; };
     unsigned int minen_anzahl() const {return k_minen_anzahl; };
 
+    void verloren_animation();
+
 public slots:
     void geklickt();
     void minen_verteilen();
+
 
 signals:
     void initialisiert();
@@ -37,10 +41,10 @@ private:
     QSet<Kachel*> k_aufgedeckte_felder;
     QList <Kachel*> kacheln;
 
+    void ende(bool);
     void kacheln_erstellen(QGridLayout*);
     void nachbarn_hinzufuegen();
     void layout_erstellen();
-    void verloren_animation();
 
     QTimer* explosion_timer;
 };

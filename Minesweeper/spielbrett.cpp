@@ -1,13 +1,12 @@
 #include "spielbrett.h"
-#include <iostream>
 #include <QGridLayout>
 #include <random>
 #include <QMessageBox>
 #include "minesweeper.h"
 
 
-Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout)
-    : QFrame(parent)
+Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout)
+    : QFrame(nullptr)
     , k_reihen(reihen)
     , k_spalten(spalten)
     , k_minen_anzahl(minen_anzahl)
@@ -16,8 +15,8 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
 
     kacheln_erstellen(spielbrett_gridLayout);
     layout_erstellen();
-    minen_verteilen();
     nachbarn_hinzufuegen();
+    minen_verteilen();
 
     connect(this, &Spielbrett::sieg, [this]()
         {
@@ -25,6 +24,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
         });
         connect(this, &Spielbrett::verloren, [this]()
         {
+            ende(true);
             explosion_timer->setProperty("sieg", false);
         });
 
@@ -43,13 +43,25 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
                     mine->setIcon(mine->flagge_bild());
                 else
                 {
-                    //if (!m_correctFlags.contains(mine))
                         mine->setIcon(mine->explosion_bild());                        
                 }
             });
 
+
 }
 
+Spielbrett::~Spielbrett()
+{
+    for (QList<Kachel*> kacheln : k_kacheln) {
+        for (Kachel* k : kacheln) {
+            delete k;
+        }
+        kacheln.clear();
+    }
+    k_kacheln.clear();
+}
+
+//erstellen des Layouts
 void Spielbrett::layout_erstellen()
 {
     this->setAttribute(Qt::WA_LayoutUsesWidgetRect);
@@ -63,6 +75,7 @@ void Spielbrett::layout_erstellen()
     this->setLayout(layout);
 }
 
+//erstellen jeder einzelnen Kachel
 void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
 {
     for (unsigned int r = 0; r < k_reihen; r++)
@@ -80,12 +93,12 @@ void Spielbrett::kacheln_erstellen(QGridLayout* spielbrett_gridLayout)
             connect(k_kacheln[r][s], &Kachel::explodiert, this, &Spielbrett::verloren_animation);
             connect(this, &Spielbrett::verloren, k_kacheln[r][s], &Kachel::deaktiviert);
             connect(this, &Spielbrett::sieg, k_kacheln[r][s], &Kachel::deaktiviert);
-            //connect(k_kacheln[r][s], &Kachel::erster_klick, this ,&Spielbrett::minen_verteilen);
         }
     }
     k_kacheln[0][0]->setDown(true);
 }
 
+//explodieren der Bomben nacheinander
 void Spielbrett::verloren_animation()
 {
     Kachel* sender = dynamic_cast<Kachel*>(this->sender());
@@ -95,10 +108,6 @@ void Spielbrett::verloren_animation()
     });
     QTimer::singleShot(500, this, [this]()
     {
-        /*for (auto falsch : falsche_flaggen)               //Kennzeichnung der falsch markierten Felder
-        {
-            wrong->setIcon(falsch->falsch_bild());
-        }*/
         for (auto mine : k_minen)
         {
             disconnect(mine, &Kachel::explodiert, this, &Spielbrett::verloren_animation);
@@ -106,6 +115,7 @@ void Spielbrett::verloren_animation()
                 mine->aufdecken();
         }
         emit verloren();
+
     });
 
     QTimer::singleShot(1000, explosion_timer, [this]()
@@ -114,6 +124,17 @@ void Spielbrett::verloren_animation()
     });
 }
 
+void Spielbrett::ende(bool spiel_verloren)
+{
+    if (spiel_verloren)
+    {
+        QMessageBox runde_verloren;
+        runde_verloren.setText("Du hast leider Verloren!");
+        runde_verloren.exec();
+    }
+}
+
+//Wenn die Funktion geklickt aufgerufen wird, wird das Signal klickt abgegeben.
 void Spielbrett::geklickt()
 {
     emit klickt();
@@ -149,6 +170,7 @@ void Spielbrett::nachbarn_hinzufuegen()
     }
 }
 
+//Minen in einer QList generieren
 void Spielbrett::minen_verteilen()
 {
 

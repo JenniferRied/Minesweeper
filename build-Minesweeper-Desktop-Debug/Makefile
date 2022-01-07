@@ -516,7 +516,9 @@ hilfe.o: ../Minesweeper/hilfe.cpp ../Minesweeper/hilfe.h \
 		ui_hilfe.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hilfe.o ../Minesweeper/hilfe.cpp
 
-kachel.o: ../Minesweeper/kachel.cpp ../Minesweeper/kachel.h
+kachel.o: ../Minesweeper/kachel.cpp ../Minesweeper/kachel.h \
+		../Minesweeper/minesweeper.h \
+		../Minesweeper/spielbrett.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kachel.o ../Minesweeper/kachel.cpp
 
 main.o: ../Minesweeper/main.cpp ../Minesweeper/minesweeper.h \

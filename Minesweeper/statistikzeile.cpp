@@ -1,6 +1,8 @@
 #include "statistikzeile.h"
 #include "ui_statistikzeile.h"
 
+//Konstruktor der Klasse Statistikzeile, bei der alle Felder der ui mit den Einträgen des Statistikeintrags gefüllt werden.
+//Dabei gibt es auch einen default-Wert für alles, falls der Statistikeintrag leer ist.
 Statistikzeile::Statistikzeile(Statistikeintrag *inhalt, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Statistikzeile)
@@ -52,21 +54,25 @@ Statistikzeile::Statistikzeile(Statistikeintrag *inhalt, QWidget *parent) :
     }
 }
 
+//Weitergabe des linken Teils der ui
 QWidget *Statistikzeile::links()
 {
     return ui->links;
 }
 
+//Weitergabe des mittleren Teils der ui
 QWidget *Statistikzeile::mitte()
 {
     return ui->mitte;
 }
 
+//Weitergabe des rechten Teils der ui
 QWidget *Statistikzeile::rechts()
 {
     return ui->rechts;
 }
 
+//Destruktor der Klasse Statistikzeile
 Statistikzeile::~Statistikzeile()
 {
     delete ui;

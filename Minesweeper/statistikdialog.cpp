@@ -6,6 +6,7 @@
 #include "statistikzeile.h"
 #include <QTimer>
 
+//Konstruktor der Klasse Statistikdialog. Dabei wird für jeden Statisikeintrag in dem Statistikspeicher eine eigene Statistikzeile erzeugt. Und die Größe nochmal angepasst.
 Statistikdialog::Statistikdialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Statistikdialog)
@@ -27,6 +28,7 @@ Statistikdialog::Statistikdialog(QWidget *parent) :
     QTimer::singleShot(100, [=] { adjustSize(); });
 }
 
+//Destruktor der Klasse Statistikdialog.
 Statistikdialog::~Statistikdialog()
 {
     delete ui;

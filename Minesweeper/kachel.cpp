@@ -1,5 +1,10 @@
 #include "kachel.h"
+#include "minesweeper.h"
+#include <QDebug>
+#include <iostream>
 #include <QMouseEvent>
+
+//Hier werden die verschiedenen Stylesheets der Kacheln festgelegt
 
 QString Kachel::nicht_aufgedecktes_Style_Sheet =
         "Kachel"
@@ -18,14 +23,14 @@ QString Kachel::aufgedeckt_Style_Sheet =
 QString Kachel::aufgedeckte_Zahlen_Style_Sheet =
         "Kachel"
         "{"
-        "   color: %1"
+        "   color: %1;"
         "   font-weight: bold;"
         "   border: 1px solid darkgray;"
         "}";
 
 QIcon Kachel::aufgedeckt_bild()
 {
-    static QIcon icon = QIcon(QPixmap(":/new/icons/weiss.png").scaled(QSize(20, 20)));
+    static QIcon icon = QIcon();
     return icon;
 }
 
@@ -82,6 +87,16 @@ void Kachel::erhoehe_anzahl_benachbarter_minen()
     ++k_benachbarte_mienen_zaehler;
 }
 
+void Kachel::erhoehe_anzahl_flaggen()
+{
+    ++k_flaggen_zaehler;
+}
+
+unsigned int Kachel::flaggen_zaehler() const
+{
+    return k_flaggen_zaehler;
+}
+
 unsigned int Kachel::benachbarte_flaggen_zaehler() const
 {
     return k_benachbarte_flaggen_zaehler;
@@ -104,6 +119,7 @@ Kachel::Kachel(Kachel_Position position, QWidget* parent)
     , k_benachbarte_mienen_zaehler(0)
     , k_benachbarte_flaggen_zaehler(0)
 {
+
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setCheckable(true);
@@ -142,6 +158,7 @@ Kachel_Position Kachel::position() const
     return k_position;
 }
 
+//nachbarn der Minen erstellen
 void Kachel::nachbar_hinzufuegen(Kachel *kachel)
 {
     k_nachbarn += kachel;
@@ -154,6 +171,7 @@ QSize Kachel::sizeHint() const
     return QSize(24,24);
 }
 
+//Die verschiedenen Status für das Spielfeld
 void Kachel::status_maschine_erstellen()
 {
     nicht_aufgedeckter_status = new QState;
@@ -217,7 +235,7 @@ void Kachel::status_maschine_erstellen()
         this -> setChecked(true);
         if (!ist_mine())
         {
-            zahlen_eintragen();
+            setText();
             if (!hat_benachbarte_minen())
                 nachbarn_aufdecken();
             emit aufgedeckt();
@@ -267,13 +285,12 @@ void Kachel::status_maschine_erstellen()
 
 }
 
-void Kachel::zahlen_eintragen()
+//Felder mit Zahlen füllen
+void Kachel::setText()
 {
     QString farbe;
-
-    //Funktion für zählen der benachbarten Minen fehlt noch
     switch(k_benachbarte_mienen_zaehler)
-    {
+    {        
     case 1:
         farbe = "blue";
         break;
@@ -299,18 +316,20 @@ void Kachel::zahlen_eintragen()
         farbe = "grey";
         break;
     default:
+        farbe = "white";
         break;
     }
 
     QPushButton::setStyleSheet(aufgedeckte_Zahlen_Style_Sheet.arg(farbe));
-    if(k_benachbarte_mienen_zaehler)
+    if(k_benachbarte_mienen_zaehler > 0)
         QPushButton::setText(QString::number(k_benachbarte_mienen_zaehler));
 }
 
+//Plazieren jeder einzelnen Mine
 void Kachel::mine_plazieren(bool wert)
 {
     k_ist_mine = wert;
-    for (auto nachbar : k_nachbarn)
-            nachbar->erhoehe_anzahl_benachbarter_minen();
+    for (auto n : k_nachbarn)
+            n->erhoehe_anzahl_benachbarter_minen();
 }
 
