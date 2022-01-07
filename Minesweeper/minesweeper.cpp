@@ -155,8 +155,10 @@ void Minesweeper::kachel_geklickt()
     }
 }
 
+//das spiel ist beendet und in statistik eingetragen
 void Minesweeper::spielende(bool spiel_verloren)
 {
+    timer_pausieren();
     if(spiel_verloren)
     {
         Statistikspeicher::instance().verloren(reihen,spalten,minen_anzahl);
@@ -164,7 +166,6 @@ void Minesweeper::spielende(bool spiel_verloren)
         Statistikspeicher::instance().gewonnen(reihen, spalten, minen_anzahl, zeit);
     }
     am_spielen = false;
-    timer_pausieren();
 }
 
 //Bei Klick auf den Butteon pause, wird der Timer angehalten, das Spielfeld versteckt und der Text des Button auf weiter gesetzt.
