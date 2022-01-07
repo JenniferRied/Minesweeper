@@ -29,7 +29,6 @@ public slots:
     void statistik_oeffnen();
     void timer_timeout();
     void kachel_geklickt();
-    void setze_schwierigkeit();
 
 signals:
     void starte_spiel();
@@ -53,6 +52,5 @@ private:
     void timer_pausieren();
     void timer_fortsetzen();
 
-    unsigned int schwierigkeit;
 };
 #endif // MINESWEEPER_H

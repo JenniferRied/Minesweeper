@@ -1,11 +1,44 @@
 #include "einstellungen.h"
 #include "ui_einstellungen.h"
+#include "minesweeper.h"
 
 Einstellungen::Einstellungen(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Einstellungen)
 {
     ui->setupUi(this);
+    connect(ui->akzeptieren_button, SIGNAL(clicked()), this, SLOT(uebernehmen()));
+    connect(ui->akzeptieren_button, SIGNAL(clicked()), this, SLOT(bestaetigung()));
+    connect(ui->abbrechen_button, SIGNAL(clicked()), this, SLOT(abbrechen()));
+    connect(ui->abbrechen_button, SIGNAL(clicked()), this, SLOT(abbruch()));
+}
+
+void Einstellungen::abbrechen()
+{
+    QDialog::close();
+}
+
+bool Einstellungen::bestaetigung()
+{
+    bestaetigen = true;
+    return bestaetigen;
+}
+
+bool Einstellungen::abbruch()
+{
+    bestaetigen = false;
+    return bestaetigen;
+}
+
+bool Einstellungen::abschluss()
+{
+    return bestaetigen;
+}
+
+void Einstellungen::closeEvent(QCloseEvent *event)
+{
+    emit einstellungen_geschlossen();
+    event->accept();
 }
 
 unsigned int Einstellungen::get_spaltenanzahl()
@@ -21,12 +54,6 @@ unsigned int Einstellungen::get_reihenanzahl()
 unsigned int Einstellungen::get_minenanzahl()
 {
     return ui->minenanzahl_edit->text().toInt();
-}
-
-void Einstellungen::abgebrochen()
-{
-    emit closed();
-    QDialog::close();
 }
 
 unsigned int Einstellungen::get_schwierigkeit()
@@ -58,21 +85,10 @@ void Einstellungen::uebernehmen()
     get_reihenanzahl();
     get_spaltenanzahl();
     get_schwierigkeit();
-    emit closed();
     QDialog::close();
 }
 
 Einstellungen::~Einstellungen()
 {
     delete ui;
-}
-
-void Einstellungen::on_abbrechen_button_clicked()
-{
-    abgebrochen();
-}
-
-void Einstellungen::on_akzeptieren_button_clicked()
-{
-    uebernehmen();
 }

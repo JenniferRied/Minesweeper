@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QObject>
+#include <QCloseEvent>
 
 namespace Ui {
 class Einstellungen;
@@ -22,18 +23,25 @@ public:
     unsigned int get_minenanzahl();
     unsigned int get_schwierigkeit();
 
-    void abgebrochen();
+    //void uebernehmen();
+
+public slots:
+
     void uebernehmen();
+    void abbrechen();
+    bool bestaetigung();
+    bool abbruch();
+    bool abschluss();
 
 signals:
-    void closed();
+    void einstellungen_geschlossen();
 
-private slots:
-    void on_abbrechen_button_clicked();
-
-    void on_akzeptieren_button_clicked();
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::Einstellungen *ui;
+
+    bool bestaetigen;
 };
 #endif // EINSTELLUNGEN_H

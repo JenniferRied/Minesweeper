@@ -506,7 +506,10 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ####### Compile
 
 einstellungen.o: ../Minesweeper/einstellungen.cpp ../Minesweeper/einstellungen.h \
-		ui_einstellungen.h
+		ui_einstellungen.h \
+		../Minesweeper/minesweeper.h \
+		../Minesweeper/spielbrett.h \
+		../Minesweeper/kachel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o einstellungen.o ../Minesweeper/einstellungen.cpp
 
 hilfe.o: ../Minesweeper/hilfe.cpp ../Minesweeper/hilfe.h \

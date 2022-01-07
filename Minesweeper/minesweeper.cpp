@@ -7,6 +7,7 @@
 #include "statistikdialog.h"
 #include "statistikspeicher.h"
 #include <iostream>
+#include <QAction>
 
 Minesweeper::Minesweeper(QWidget *parent)
     : QMainWindow(parent)
@@ -51,8 +52,42 @@ void Minesweeper::hilfe_oeffnen()
 void Minesweeper::einstellungen_oeffnen()
 {
     Einstellungen *einstellungen = new Einstellungen();
-    einstellungen->show();
-    connect(einstellungen, SIGNAL(closed()), this, SLOT(setze_schwierigkeit()));
+    einstellungen->exec();
+    if(einstellungen->abschluss() == true)
+    {
+    unsigned int schwierigkeit = einstellungen->get_schwierigkeit();
+    unsigned int custom_reihen = einstellungen->get_reihenanzahl();
+    unsigned int custom_spalten = einstellungen->get_spaltenanzahl();
+    unsigned int custom_minen = einstellungen->get_minenanzahl();
+
+    switch(schwierigkeit)
+    {
+    case 0:
+        reihen = 9;
+        spalten = 9;
+        minen_anzahl = 10;
+        break;
+    case 1:
+        reihen = 16;
+        spalten = 16;
+        minen_anzahl = 40;
+        break;
+    case 2:
+        reihen = 16;
+        spalten = 30;
+        minen_anzahl = 99;
+        break;
+    case 3:
+        reihen = custom_reihen;
+        spalten = custom_spalten;
+        minen_anzahl = custom_minen;
+    default:
+        break;
+    }
+
+    initialisieren();
+    adjustSize();
+    }
 }
 
 void Minesweeper::initialisieren()
@@ -146,43 +181,6 @@ void Minesweeper::timer_timeout()
     ui->Zeitanzeige->display(zeit);
 }
 
-void Minesweeper::setze_schwierigkeit()
-{
-    Einstellungen *einstellungen = new Einstellungen();
-
-    unsigned int schwierigkeit = einstellungen->get_schwierigkeit();
-    unsigned int custom_reihen = einstellungen->get_reihenanzahl();
-    unsigned int custom_spalten = einstellungen->get_spaltenanzahl();
-    unsigned int custom_minen = einstellungen->get_minenanzahl();
-
-    switch(schwierigkeit)
-    {
-    case 0:
-        reihen = 9;
-        spalten = 9;
-        minen_anzahl = 10;
-        break;
-    case 1:
-        reihen = 16;
-        spalten = 16;
-        minen_anzahl = 40;
-        break;
-    case 2:
-        reihen = 16;
-        spalten = 30;
-        minen_anzahl = 99;
-        break;
-    case 3:
-        reihen = custom_reihen;
-        spalten = custom_spalten;
-        minen_anzahl = custom_minen;
-    default:
-        break;
-    }
-
-    initialisieren();
-    adjustSize();
-}
 
 Minesweeper::~Minesweeper()
 {
