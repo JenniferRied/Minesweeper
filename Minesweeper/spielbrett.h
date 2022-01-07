@@ -31,7 +31,7 @@ signals:
     void klickt();
     void sieg();
     void verloren();
-    void timer_anhalten();
+    bool timer_anhalten(bool);
     void wurde_markiert();
 
 private:

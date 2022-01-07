@@ -135,14 +135,13 @@ void Spielbrett::verloren_animation()
 
 void Spielbrett::ende(bool spiel_verloren)
 {
-    emit timer_anhalten();
+    emit timer_anhalten(spiel_verloren);
 
     if (spiel_verloren)
     {
         QMessageBox runde_verloren;
         runde_verloren.setText("Du hast leider Verloren!");
         runde_verloren.exec();
-        Statistikspeicher::instance().verloren(k_reihen,k_spalten,k_minen_anzahl);
     }
     if(!spiel_verloren)
     {
