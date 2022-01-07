@@ -1,5 +1,4 @@
 #include "spielbrett.h"
-#include <iostream>
 #include <QGridLayout>
 #include <random>
 #include <QMessageBox>
@@ -25,6 +24,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
         });
         connect(this, &Spielbrett::verloren, [this]()
         {
+            ende(true);
             explosion_timer->setProperty("sieg", false);
         });
 
@@ -46,6 +46,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
                         mine->setIcon(mine->explosion_bild());                        
                 }
             });
+
 
 }
 
@@ -114,12 +115,23 @@ void Spielbrett::verloren_animation()
                 mine->aufdecken();
         }
         emit verloren();
+
     });
 
     QTimer::singleShot(1000, explosion_timer, [this]()
     {
         explosion_timer->start(25);
     });
+}
+
+void Spielbrett::ende(bool spiel_verloren)
+{
+    if (spiel_verloren)
+    {
+        QMessageBox runde_verloren;
+        runde_verloren.setText("Du hast leider Verloren!");
+        runde_verloren.exec();
+    }
 }
 
 //Wenn die Funktion geklickt aufgerufen wird, wird das Signal klickt abgegeben.

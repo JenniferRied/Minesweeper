@@ -1,4 +1,5 @@
 #include "minesweeper.h"
+#include "kachel.h"
 #include "ui_minesweeper.h"
 #include "hilfe.h"
 #include "einstellungen.h"
@@ -22,12 +23,19 @@ Minesweeper::Minesweeper(QWidget *parent)
     initialisieren();
     Minesweeper::adjustSize();
 
+
     connect(ui->actionHilfe, SIGNAL(triggered()), this, SLOT(hilfe_oeffnen()));
     connect(ui->neu_button, SIGNAL(clicked()), this, SLOT(neu()));
     connect(ui->pause_button, SIGNAL(clicked()), this, SLOT(pausieren()));
     connect(ui->beenden_button, SIGNAL(clicked()), this, SLOT(beenden()));
     connect(ui->actionStatistik, SIGNAL(triggered()), this, SLOT(statistik_oeffnen()));
     connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
+}
+
+void Minesweeper::flaggen_zaehler(int anzahl)
+{
+
+    ui->flaggen_anzahl->display(anzahl);
 }
 
 //Wenn der Button neu geklickt wird, wird der timer angehalten und auf null gesetzt, zwei boolean-Werte auf den Anfangszustand gesetzt und das neue Spiel initialisiert.

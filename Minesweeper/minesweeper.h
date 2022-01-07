@@ -18,6 +18,7 @@ public:
     Minesweeper(QWidget *parent = nullptr);
     ~Minesweeper();
     QGridLayout spielbrett_gridLayout;
+    Ui::Minesweeper *ui;
 
 public slots:
     void neu();
@@ -30,12 +31,13 @@ public slots:
     void timer_timeout();
     void kachel_geklickt();
     void setze_schwierigkeit();
+    void flaggen_zaehler(int);
 
 signals:
     void starte_spiel();
 
 private:
-    Ui::Minesweeper *ui;
+
     QFrame* mainFrame;
     Spielbrett* spielbrett = nullptr;
 

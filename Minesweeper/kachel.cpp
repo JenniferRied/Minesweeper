@@ -1,6 +1,10 @@
 #include "kachel.h"
+#include "minesweeper.h"
 #include <QDebug>
+#include <iostream>
 #include <QMouseEvent>
+
+//Hier werden die verschiedenen Stylesheets der Kacheln festgelegt
 
 QString Kachel::nicht_aufgedecktes_Style_Sheet =
         "Kachel"
@@ -83,6 +87,16 @@ void Kachel::erhoehe_anzahl_benachbarter_minen()
     ++k_benachbarte_mienen_zaehler;
 }
 
+void Kachel::erhoehe_anzahl_flaggen()
+{
+    ++k_flaggen_zaehler;
+}
+
+unsigned int Kachel::flaggen_zaehler() const
+{
+    return k_flaggen_zaehler;
+}
+
 unsigned int Kachel::benachbarte_flaggen_zaehler() const
 {
     return k_benachbarte_flaggen_zaehler;
@@ -105,6 +119,7 @@ Kachel::Kachel(Kachel_Position position, QWidget* parent)
     , k_benachbarte_mienen_zaehler(0)
     , k_benachbarte_flaggen_zaehler(0)
 {
+
     status_maschine_erstellen();
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setCheckable(true);

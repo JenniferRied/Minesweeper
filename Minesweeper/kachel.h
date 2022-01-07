@@ -33,6 +33,7 @@ public:
 
     unsigned int benachbarte_mienen_zaehler() const;
     unsigned int benachbarte_flaggen_zaehler() const;
+    unsigned int flaggen_zaehler() const;
 
     virtual void mousePressEvent(QMouseEvent* e) override;
     virtual void mouseReleaseEvent(QMouseEvent* e) override;
@@ -46,9 +47,12 @@ public:
 
     QList<Kachel*>& nachbarn();
 
+
+
 public slots:
 
     void erhoehe_anzahl_benachbarter_flaggen();
+    void erhoehe_anzahl_flaggen();
     void verringere_anzahl_benachbarter_flaggen();
     void erhoehe_anzahl_benachbarter_minen();
 
@@ -97,6 +101,7 @@ private:
 
     unsigned int k_benachbarte_mienen_zaehler;
     unsigned int k_benachbarte_flaggen_zaehler;
+    unsigned int k_flaggen_zaehler;
 
 };
 

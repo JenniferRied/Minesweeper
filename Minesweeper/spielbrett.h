@@ -22,6 +22,7 @@ public slots:
     void geklickt();
     void minen_verteilen();
 
+
 signals:
     void initialisiert();
     void klickt();
@@ -40,6 +41,7 @@ private:
     QSet<Kachel*> k_aufgedeckte_felder;
     QList <Kachel*> kacheln;
 
+    void ende(bool);
     void kacheln_erstellen(QGridLayout*);
     void nachbarn_hinzufuegen();
     void layout_erstellen();
