@@ -6,8 +6,8 @@
 #include "minesweeper.h"
 
 
-Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout)
-    : QFrame(parent)
+Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout)
+    : QFrame(nullptr)
     , k_reihen(reihen)
     , k_spalten(spalten)
     , k_minen_anzahl(minen_anzahl)
@@ -47,6 +47,17 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
                 }
             });
 
+}
+
+Spielbrett::~Spielbrett()
+{
+    for (QList<Kachel*> kacheln : k_kacheln) {
+        for (Kachel* k : kacheln) {
+            delete k;
+        }
+        kacheln.clear();
+    }
+    k_kacheln.clear();
 }
 
 //erstellen des Layouts

@@ -9,7 +9,8 @@ class Spielbrett : public QFrame
 {
     Q_OBJECT
 public:
-    Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QWidget* parent, QGridLayout* spielbrett_gridLayout);
+    Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout);
+    virtual ~Spielbrett();
 
     unsigned int reihen() const{return k_reihen; };
     unsigned int spalten() const{return k_spalten; };

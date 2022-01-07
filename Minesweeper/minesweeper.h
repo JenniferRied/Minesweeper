@@ -37,7 +37,7 @@ signals:
 private:
     Ui::Minesweeper *ui;
     QFrame* mainFrame;
-    Spielbrett* spielbrett;
+    Spielbrett* spielbrett = nullptr;
 
     unsigned int reihen;
     unsigned int spalten;
