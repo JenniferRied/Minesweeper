@@ -130,6 +130,8 @@ void Spielbrett::verloren_animation()
 
 void Spielbrett::ende(bool spiel_verloren)
 {
+    emit timer_anhalten();
+
     if (spiel_verloren)
     {
         QMessageBox runde_verloren;
