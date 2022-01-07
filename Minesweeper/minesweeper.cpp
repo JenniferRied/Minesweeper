@@ -33,9 +33,10 @@ Minesweeper::Minesweeper(QWidget *parent)
     connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
 }
 
+//Hier wird die Flaggenanzahl auf der Ui angezeigt
+
 void Minesweeper::flaggen_zaehler(int anzahl)
 {
-
     ui->flaggen_anzahl->display(anzahl);
 }
 
@@ -50,6 +51,8 @@ void Minesweeper::neu()
     initialisieren();
 }
 
+//Hier wird das Hilfefenster geöffnet
+
 void Minesweeper::hilfe_oeffnen()
 {
     timer_pausieren();
@@ -59,6 +62,8 @@ void Minesweeper::hilfe_oeffnen()
     ui->spielbrett_widget->show();
     timer_fortsetzen();
 }
+
+//Hier wird das Einstellungsfenster geöffnet
 
 void Minesweeper::einstellungen_oeffnen()
 {
@@ -100,6 +105,8 @@ void Minesweeper::einstellungen_oeffnen()
     adjustSize();
     }
 }
+
+//Hier wird das Spielbrett initialisiert
 
 void Minesweeper::initialisieren()
 {

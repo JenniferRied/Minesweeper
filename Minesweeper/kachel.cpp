@@ -133,6 +133,8 @@ Kachel::Kachel(Kachel_Position position, QWidget* parent)
     setCheckable(true);
 }
 
+//Hier werden die Maussignale abgefangen
+
 void Kachel::mousePressEvent(QMouseEvent *e)
 {
 
@@ -161,6 +163,8 @@ void Kachel::mouseReleaseEvent(QMouseEvent *e)
         emit mittelklick();
 }
 
+//Diese Funktion gibt die Position der Kachel zurück
+
 Kachel_Position Kachel::position() const
 {
     return k_position;
@@ -173,6 +177,8 @@ void Kachel::nachbar_hinzufuegen(Kachel *kachel)
     connect(this, &Kachel::nachbarn_aufdecken, kachel, &Kachel::aufdecken, Qt::QueuedConnection);
     connect(this, &Kachel::unPreviewNeighbors, kachel, &Kachel::unPreview, Qt::QueuedConnection);
 }
+
+//Hier wird die Größe der Kacheln festgelegt
 
 QSize Kachel::sizeHint() const
 {
