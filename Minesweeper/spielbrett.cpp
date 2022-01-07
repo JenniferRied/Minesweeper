@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "minesweeper.h"
 #include "statistikspeicher.h"
+#include "iostream"
 
 
 Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int minen_anzahl, QGridLayout* spielbrett_gridLayout)
@@ -19,6 +20,7 @@ Spielbrett::Spielbrett(unsigned int reihen, unsigned int spalten, unsigned int m
     nachbarn_hinzufuegen();
     minen_verteilen();
     anzahl_flaggen = 0;
+    k_richtige_flaggen = 0;
 
     connect(this, &Spielbrett::sieg, [this]()
         {
@@ -239,10 +241,28 @@ void Spielbrett::gewonnen()
 
     emit wurde_markiert();
     ++anzahl_flaggen;
-
-    if(anzahl_flaggen == k_minen_anzahl)
+    bool richtig = false;
+    if(anzahl_flaggen==k_minen_anzahl)
     {
-        //emit sieg();
+        for (unsigned int r = 0; r < k_reihen; r++)
+        {
+            for (unsigned int s = 0; s < k_spalten; s++)
+            {
+                richtig = false;
+                if(k_kacheln[r][s]->ist_mine()&&k_kacheln[r][s]->ist_markiert())
+                {
+                    richtig = true;
+                    ++k_richtige_flaggen;
+                    std::cout<<k_richtige_flaggen<<std::endl;
+                }
+            }
+        }
+    }
+
+
+    if(k_richtige_flaggen == k_minen_anzahl)
+    {
+        emit sieg();
     }
 
 }

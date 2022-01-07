@@ -42,7 +42,7 @@ private:
 
     QList<QList<Kachel*>> k_kacheln;
     QSet<Kachel*> k_minen;
-    QSet<Kachel*> k_richtige_flaggen;
+    unsigned int k_richtige_flaggen;
     QSet<Kachel*> k_falsche_flaggen;
     QSet<Kachel*> k_aufgedeckte_felder;
     QList <Kachel*> kacheln;
