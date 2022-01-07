@@ -121,6 +121,7 @@ void Minesweeper::initialisieren()
 
     connect(spielbrett, &Spielbrett::initialisiert, this, &Minesweeper::starte_spiel, Qt::UniqueConnection);
     connect(spielbrett, SIGNAL(klickt()), this, SLOT(kachel_geklickt()));
+    connect(spielbrett, SIGNAL(timer_anhalten()),this, SLOT(timer_pausieren()));
 
     haupt_Frame_Layout->addWidget(spielbrett);
 
@@ -159,7 +160,8 @@ void Minesweeper::beenden()
     ui->Zeitanzeige->display(0);
     timer_pausieren();
     ui->pause_button->setText("Pause");
-    spielbrett->verloren_animation();
+    //spielbrett->ende(true);
+     spielbrett->verloren_animation();
 }
 
 //Bei dieser Funktion wird vor dem anzeigen des Statistikfensters der timer pausiert und das Spielfeld versteckt.

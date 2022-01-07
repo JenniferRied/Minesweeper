@@ -31,6 +31,7 @@ public slots:
     void timer_timeout();
     void kachel_geklickt();
     void flaggen_zaehler(int);
+    void timer_pausieren();
 
 signals:
     void starte_spiel();
@@ -51,7 +52,6 @@ private:
     bool erster_klick = true;
 
     void timer_starten();
-    void timer_pausieren();
     void timer_fortsetzen();
 
 };

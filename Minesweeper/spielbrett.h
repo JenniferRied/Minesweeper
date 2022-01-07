@@ -17,6 +17,7 @@ public:
     unsigned int minen_anzahl() const {return k_minen_anzahl; };
 
     void verloren_animation();
+    void ende(bool);
 
 public slots:
     void geklickt();
@@ -28,6 +29,7 @@ signals:
     void klickt();
     void sieg();
     void verloren();
+    void timer_anhalten();
 
 private:
     unsigned int k_reihen;
@@ -41,7 +43,6 @@ private:
     QSet<Kachel*> k_aufgedeckte_felder;
     QList <Kachel*> kacheln;
 
-    void ende(bool);
     void kacheln_erstellen(QGridLayout*);
     void nachbarn_hinzufuegen();
     void layout_erstellen();
