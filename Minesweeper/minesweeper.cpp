@@ -8,6 +8,7 @@
 #include "statistikspeicher.h"
 #include <iostream>
 
+//Konstruktor der Klasse Minesweeper.
 Minesweeper::Minesweeper(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Minesweeper)
@@ -29,12 +30,14 @@ Minesweeper::Minesweeper(QWidget *parent)
     connect(ui->actionEinstellungen, SIGNAL(triggered()), this, SLOT(einstellungen_oeffnen()));
 }
 
+//Wenn der Button neu geklickt wird, wird der timer angehalten und auf null gesetzt, zwei boolean-Werte auf den Anfangszustand gesetzt und das neue Spiel initialisiert.
 void Minesweeper::neu()
 {
     timer_pausieren();
     pausiert = false;
     erster_klick = true;
     ui->Zeitanzeige->display(0);
+    ui->pause_button->setText("Pause");
     initialisieren();
 }
 
@@ -68,6 +71,7 @@ void Minesweeper::initialisieren()
     haupt_Frame_Layout->setSizeConstraint(QLayout::SetNoConstraint);
 }
 
+//Diese Funktion wird bei jeden Klick auf eine Kachel aufgerufen und wenn dieser Klick der erste war, wird der Timer gestartet.
 void Minesweeper::kachel_geklickt()
 {
     if(erster_klick)
@@ -77,6 +81,8 @@ void Minesweeper::kachel_geklickt()
     }
 }
 
+//Bei Klick auf den Butteon pause, wird der Timer angehalten, das Spielfeld versteckt und der Text des Button auf weiter gesetzt.
+//Bei erneuten Klick wird alles wieder auf den vorherigen Zustand gestellt.
 void Minesweeper::pausieren()
 {
     if (pausiert)
@@ -91,14 +97,18 @@ void Minesweeper::pausieren()
     }
 }
 
+//Wird der Button beenden geklickt, so wird der Timer pausiert und auf null gestellt, das Spielfeld aufgedeckt und das Spiel als verloren gewertet.
 void Minesweeper::beenden()
 {
     ui->Zeitanzeige->display(0);
     timer_pausieren();
-    //alle felder aufdecken
-    //spiel zählt als verloren: Statistikspeicher::instance().verloren(5,5,3);
+    ui->pause_button->setText("Pause");
+    //spielbrett->verloren_animation(); //erst rein, wenn das Aufdecken richtig funktiioniert
+    Statistikspeicher::instance().verloren(reihen,spalten,minen_anzahl);
 }
 
+//Bei dieser Funktion wird vor dem anzeigen des Statistikfensters der timer pausiert und das Spielfeld versteckt.
+//Nach dem schließen des Fensters, wird das Spielbrett wieder gezeigt und der Timer läuft weiter.
 void Minesweeper::statistik_oeffnen()
 {
     timer_pausieren();
@@ -109,6 +119,7 @@ void Minesweeper::statistik_oeffnen()
     timer_fortsetzen();
 }
 
+//Diese Funktion erstellt einen neuen Timer und dieser sendet jede sekunde ein Signal, dass eine sekunde vergangen ist.
 void Minesweeper::timer_starten()
 {
     if(timer != NULL)
@@ -122,6 +133,7 @@ void Minesweeper::timer_starten()
     timer->start(1000);
 }
 
+//Disee Funktion pausiert den Timer, wenn er noch nicht pausiert ist.
 void Minesweeper::timer_pausieren()
 {
     if(timer && !pausiert)
@@ -131,6 +143,7 @@ void Minesweeper::timer_pausieren()
     }
 }
 
+//Diese Funktion setzt den timer fort, wennn er pausiert ist.
 void Minesweeper::timer_fortsetzen()
 {
     if(timer && pausiert)
@@ -140,6 +153,7 @@ void Minesweeper::timer_fortsetzen()
     }
 }
 
+//Diese Funktion wird jede Sekunde durch den Timer aufgerufen und setzt sie Zeit eins hoch und diese neue Zahl wird auf der Zeitanzeige gezeigt.
 void Minesweeper::timer_timeout()
 {
     zeit++;
@@ -184,6 +198,7 @@ void Minesweeper::setze_schwierigkeit()
     adjustSize();
 }
 
+//Destruktor der Klasse Minesweeper.
 Minesweeper::~Minesweeper()
 {
     delete ui;

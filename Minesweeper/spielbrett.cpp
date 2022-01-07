@@ -114,6 +114,7 @@ void Spielbrett::verloren_animation()
     });
 }
 
+//Wenn die Funktion geklickt aufgerufen wird, wird das Signal klickt abgegeben.
 void Spielbrett::geklickt()
 {
     emit klickt();

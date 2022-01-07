@@ -15,6 +15,8 @@ public:
     unsigned int spalten() const{return k_spalten; };
     unsigned int minen_anzahl() const {return k_minen_anzahl; };
 
+    void verloren_animation();
+
 public slots:
     void geklickt();
     void minen_verteilen();
@@ -40,7 +42,6 @@ private:
     void kacheln_erstellen(QGridLayout*);
     void nachbarn_hinzufuegen();
     void layout_erstellen();
-    void verloren_animation();
 
     QTimer* explosion_timer;
 };
