@@ -35,6 +35,7 @@ public slots:
 
 signals:
     void starte_spiel();
+    void beendet();
 
 private:
 

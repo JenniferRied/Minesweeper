@@ -147,6 +147,22 @@ void Spielbrett::ende(bool spiel_verloren)
     }
 }
 
+void Spielbrett::alle_aufdecken()
+{
+    for(unsigned int i= 0; i < k_reihen; i++)
+    {
+        for(unsigned int j= 0; j < k_spalten; j++)
+        {
+            if(k_kacheln[i][j]->ist_mine())
+            {
+                disconnect(k_kacheln[i][j], &Kachel::explodiert, this, &Spielbrett::verloren_animation);
+            }
+            k_kacheln[i][j]->aufdecken();
+        }
+    }
+    ende(true);
+}
+
 //Wenn die Funktion geklickt aufgerufen wird, wird das Signal klickt abgegeben.
 void Spielbrett::geklickt()
 {

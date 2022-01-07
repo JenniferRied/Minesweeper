@@ -22,7 +22,7 @@ public:
 public slots:
     void geklickt();
     void minen_verteilen();
-
+    void alle_aufdecken();
 
 signals:
     void initialisiert();
